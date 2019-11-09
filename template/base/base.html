@@ -1,15 +1,23 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content= "{% block descripcion %} Asistencias del Instituto Cultural de Oxford El Salvador {% endblock %}"  >
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="author" content="pear">
+  <meta name="keywords" content="{% block palabrasClave %}{% endblock %} ">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-  <title>SB Admin - Blank Page</title>
+  {% block agregarMetas %}
+
+  {% endblock %}
+
+  <title> {% block titulo %} Inicio {% endblock %}</title>
+  <!-- Inicio de los CSS-->
 
   <!-- Custom fonts for this template-->
   <link href="../../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -19,6 +27,9 @@
 
   <!-- Custom styles for this template-->
   <link href="../../static/css/sb-admin.css" rel="stylesheet">
+  {% block agregarCss %}
+  {% endblock %}
+    <!-- fin de los CSS-->
 
 </head>
 
@@ -119,19 +130,24 @@
       <div class="container-fluid">
 
         <!-- Ruta del contendio -->
+
         <ol class="breadcrumb">
           <!-- Formato para la ruta del contenido para la herencia -->
+          {% block listaRuta %}
           <li class="breadcrumb-item">
             <a href="index.html">Inicio</a>
           </li>
           <li class="breadcrumb-item active">Nombre de la pagina</li>
+          {% endblock %}
         </ol>
         <!-- Fin de la Ruta del contendio -->
 
         <!-- Contenido de la pagina  -->
-        <h1>Titulo de la pagina</h1>
-        <hr>
-        <p>Contenido de la página.</p>
+
+        {% block contenido %}
+
+
+        {% endblock %}
         <!-- Fin del Contenido de la pagina  -->
 
       </div>
@@ -177,7 +193,11 @@
     </div>
   </div>
 <!-- Fin del modal de cerrar sesión -->
-  <!-- Bootstrap core JavaScript-->
+
+
+<!-- Incio javaScript-->
+<!-- Bootstrap core JavaScript-->
+
   <script src="../../static/vendor/jquery/jquery.min.js"></script>
   <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -186,7 +206,11 @@
 
   <!-- Custom scripts for all pages-->
   <script src="../../static/js/sb-admin.min.js"></script>
+  {% block agregarScript %}
 
+  {% endblock %}
+
+<!-- fin javaScript-->
 </body>
 
 </html>
