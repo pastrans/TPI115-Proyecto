@@ -2,8 +2,8 @@ from django.db import models
 
 # Create your models here.
 class TipoFalta(models.Model):
-    idTipoFalta = AutoField(primary_key=True)
-    nombre = CharField(max_length=50)
+    idTipoFalta = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=50)
     ESTADO = (
         ('A', 'ACTIVA'),
         ('I', 'INACTIVA')

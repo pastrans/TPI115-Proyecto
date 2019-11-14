@@ -2,8 +2,8 @@ from django.db import models
 
 # Create your models here.
 class Seccion(models.Model):
-    idSeccion = AutoField(primary_key=True)
-    nombre = CharField(max_length=5)
+    idSeccion = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=5)
     ESTADO = (
         ('A', 'ACTIVA'),
         ('I', 'INACTIVA')

@@ -31,12 +31,31 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    #'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apps.amonestacion',
+    'apps.asignatura',
+    'apps.especialidad',
+    'apps.estudiante',
+    'apps.falta',
+    'apps.grado',
+    'apps.horaClase',
+    'apps.impuntualidad',
+    'apps.inasistencia',
+    'apps.modulo',
+    'apps.observacion',
+    'apps.permiso',
+    'apps.personal',
+    'apps.sancion',
+    'apps.seccion',
+    'apps.seccionGrado',
+    'apps.tiempo',
+    'apps.tipoFalta',
+    'apps.usuario'
 ]
 
 MIDDLEWARE = [
@@ -75,8 +94,12 @@ WSGI_APPLICATION = 'proyecto.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'diariopedagogico',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 

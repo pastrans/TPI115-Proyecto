@@ -2,9 +2,9 @@ from django.db import models
 
 # Create your models here.
 class Tiempo(models.Model):
-    idTiempo = AutoField(primary_key=True)
-    horaInicial = TimeField(auto_now=False)
-    horaFinal = TimeField(auto_now=False)
+    idTiempo = models.AutoField(primary_key=True)
+    horaInicial = models.TimeField(auto_now=False)
+    horaFinal = models.TimeField(auto_now=False)
     ESTADO = (
         ('A', 'ACTIVA'),
         ('I', 'INACTIVA')

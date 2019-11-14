@@ -8,8 +8,8 @@ from apps.personal.models import Personal
 class SeccionGrado(models.Model):
     idSeccionGrado = models.AutoField(primary_key=True)
     grado = models.ForeignKey(Grado, on_delete=models.CASCADE)
-    seccion = models.ForeignKey(Seccion, null=False, blank=False on_delete=models.CASCADE)
-    especialidad = models.ForeignKey(Especialidad, null=False, blank=False on_delete=models.CASCADE)
+    seccion = models.ForeignKey(Seccion, null=False, blank=False, on_delete=models.CASCADE)
+    especialidad = models.ForeignKey(Especialidad, null=False, blank=False, on_delete=models.CASCADE)
     personal = models.ForeignKey(Personal, on_delete=models.CASCADE)
     TURNO = (
         ('M', 'Matutino'),

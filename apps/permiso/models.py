@@ -3,8 +3,8 @@ from apps.modulo.models import Modulo
 
 # Create your models here.
 class Permiso(models.Model):
-    idPermiso = AutoField(primary_key=True)
-    nombre = CharField(max_length=50)
+    idPermiso = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=50)
     ESTADO = (
         ('A', 'ACTIVA'),
         ('I', 'INACTIVO')

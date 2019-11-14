@@ -1,5 +1,8 @@
 (function($) {
   "use strict"; // Start of use strict
+  
+  //Habilitar tooltip
+  $('[data-toggle="tooltip"]').tooltip()
 
   // Toggle the side navigation
   $("#sidebarToggle").on('click', function(e) {

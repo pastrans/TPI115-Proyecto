@@ -5,8 +5,8 @@ from apps.seccionGrado.models import SeccionGrado
 from apps.personal.models import Personal
 
 # Create your models here.
-class Horario(models.Model):
-    idHorario = models.AutoField(primary_key=True)
+class HoraClase(models.Model):
+    idHoraClase = models.AutoField(primary_key=True)
     asignatura = models.ForeignKey(Asignatura, null=False, blank=False, on_delete=models.CASCADE)
     seccionGrado = models.ForeignKey(SeccionGrado, null=False, blank=False, on_delete=models.CASCADE)
     personal = models.ForeignKey(Personal, null=False, blank=False, on_delete=models.CASCADE)
