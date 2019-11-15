@@ -1,6 +1,6 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
 
   <meta charset="utf-8">
@@ -9,13 +9,13 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin - Login</title>
+  <title>Instituto Cultural Oxfor DP - Login</title>
 
   <!-- Custom fonts for this template-->
-  <link href="../../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
 
   <!-- Custom styles for this template-->
-  <link href="../../static/css/sb-admin.css" rel="stylesheet">
+  <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
 
 </head>
 
@@ -23,19 +23,20 @@
 
   <div class="container">
     <div class="card card-login mx-auto mt-5">
-      <div class="card-header" align="center"  >Iniciar sesión</div>
+      <div class="card-header text-center">Iniciar sesión</div>
       <div class="card-body">
-        <form>
+        <form method="POST">
+          {% csrf_token %}
           <div class="form-group">
             <div class="form-label-group">
-              <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="required" autofocus="autofocus">
-              <label for="inputEmail">Dirección de correo electrónico</label>
+              <input type="text" id="codigo" class="form-control" placeholder="Codigo de usuario" required="required" autofocus="autofocus" name="codigo">
+              <label for="codigo">Codigo de usuario</label>
             </div>
           </div>
           <div class="form-group">
             <div class="form-label-group">
-              <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="required">
-              <label for="inputPassword">Contraseña</label>
+              <input type="password" id="password" class="form-control" placeholder="Password" required="required" name="password">
+              <label for="password">Contraseña</label>
             </div>
           </div>
           <div class="form-group">
@@ -46,7 +47,7 @@
               </label>
             </div>
           </div>
-          <a class="btn btn-primary btn-block" href="">Iniciar sesión</a>
+          <button class="btn btn-primary btn-block" type="submit">Iniciar sesión</button>
         </form>
         <div class="text-center">
           <a class="d-block small" href="forgot-password.html">¿Se te olvidó tu contraseña?</a>
@@ -56,11 +57,11 @@
   </div>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="../../static/vendor/jquery/jquery.min.js"></script>
-  <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="../../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
 </body>
 

@@ -36,10 +36,10 @@ def editarSeccion(request, idSeccion):
     return redirect('resumenSeccion')
 
 @login_required
-def eliminarSeccion(request, idSeccion):
+def estadoSeccion(request, idSeccion, estado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
     seccion = Seccion.objects.get(idSeccion = idSeccion)
-    seccion.estado = 'I'
+    seccion.estado = estado
     seccion.save()
     return redirect('resumenSeccion')

@@ -19,6 +19,9 @@ from django.urls import include, path
 
 urlpatterns = [
     #path('secciones/', include('apps.secciones.urls')),
+    path('', include('apps.login.urls'), name='sesion'),
+    path('index/', include('apps.index.urls'), name='index'),
+    path('my/', include('apps.public.urls'), name='myindex'),
     path('seccion/', include('apps.seccion.urls')),
     #url(r'^admin/', admin.site.urls),
 ]

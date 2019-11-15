@@ -64,7 +64,7 @@
                   <td>
                     {% if seccion.estado == 'A' %}
                     <button class="btn btn-outline-dark" id="btnEditar" onclick="editarSeccion('{{ seccion.idSeccion }}', '{{ seccion.nombre }}')" data-toggle="tooltip" data-placement="bottom" title="Editar sección"> <i class="fas fa-edit"></i></button>
-                    <button class="btn btn-outline-dark" onclick="estadoSeccion({{ seccion.idSeccion }})" data-toggle="tooltip" data-placement="bottom" title="Eliminar sección"> <i class="far fa-trash-alt"></i></button>
+                    <button class="btn btn-outline-dark" onclick="eliminarSeccion({{ seccion.idSeccion }})" data-toggle="tooltip" data-placement="bottom" title="Eliminar sección"> <i class="far fa-trash-alt"></i></button>
                     {% elif seccion.estado == 'I' %}
                     <button class="btn btn-outline-dark" onclick="habilitarSeccion({{ seccion.idSeccion }})" data-toggle="tooltip" data-placement="bottom" title="Habilitar sección"> <i class="fas fa-trash-restore"></i></button>
                     {% endif %}
