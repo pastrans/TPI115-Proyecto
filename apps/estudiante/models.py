@@ -1,4 +1,5 @@
 from django.db import models
+from apps.seccionGrado.models import SeccionGrado
 
 # Create your models here.
 class Estudiante(models.Model):
@@ -11,3 +12,4 @@ class Estudiante(models.Model):
         ('I', 'INACTIVO')
     )
     estado = models.CharField(max_length=1, choices=ESTADO, default='A')
+    seccionGrado = models.ForeignKey(SeccionGrado, on_delete=models.CASCADE, null=True)

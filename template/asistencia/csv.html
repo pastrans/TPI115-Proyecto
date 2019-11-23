@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>CSV</title>
+    </head>
+    <body>
+        <h1>{{ fecha }}</h1>
+        <p>SUBIR ARCHIVO CSV</p>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" id="file1" name="file">
+            <input type="submit" value="UPLOAD" >
+        </form>
+        <table>
+            <tr>
+                <th>NOMBRE</th>
+            </tr>
+            {% if estudiantes %}
+            {% for estudiante in estudiantes %}
+            <tr>
+                <td>{{ estudiante }}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </table>
+    </body>
+</html>
