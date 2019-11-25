@@ -22,7 +22,7 @@ function eliminarTipoFalta(idTipo){
     });
 }
 
-function habilitarTipoSeccion(idTipo){
+function habilitarTipoFalta(idTipo){
     Swal.fire({
         title: '¿Seguro de activar el Tipo De Falta?',
         text: "Los datos relacionados con el Tipo Falta ahora serán visibles",
