@@ -1,6 +1,7 @@
 $(document).ready(function(){
     $("#frmSeccion").attr('action', 'agregar');
 });
+
 function editarSeccion(idSeccion, nombre){
     $("#frmSeccion").attr('action', 'editar/' + idSeccion);
     $("#nombre").val(nombre);
