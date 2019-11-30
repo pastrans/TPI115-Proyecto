@@ -1,0 +1,98 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}
+  Administrar asignaturas
+{% endblock %}
+
+<!-- incio Bloques para las meta-->
+{% block descripcion %}
+  Asistencias del Instituto Cultural de Oxford El Salvador
+{% endblock %}
+
+{% block palabrasClave %}
+  "Oxford el Salvador, Colegio Oxford, Colegios de San Salvador , San Salvador, Asistencias Oxford"
+{% endblock %}
+
+{% block agregarMetas %}
+  <meta name="robots" content="follow">
+  <meta name="robots" content="index">
+  <meta name="googlebot" content="index">
+  <meta name="google-site-verification" content="ZhnGANpVN1--eBXiXa_0W4_q1pk-_HmJtN5VnrqYaW4" />
+{% endblock %}
+<!-- fin Bloques para las meta-->
+
+{% block listaRuta %}
+<li class="breadcrumb-item">
+  <a href="index.html">Inicio</a>
+</li>
+<li class="breadcrumb-item active">Nombre de la pagina</li>
+{% endblock %}
+
+{% block contenido %}
+  <h1>Administrar Asignaturas</h1>
+  
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <form method="POST" id="frmAsignatura" action="">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de la asignatura" autocomplete="off">
+              </div>
+              <button type="submit" class="btn btn-dark float-right">Guardar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="scope">Nombre</th>
+                  <th class="scope">Acciones</th>
+                </tr>
+              </thead>  
+              <tbody>
+                {% if asignaturas %}
+                {% for asignatura in asignaturas %}
+                <tr>
+                  <td>{{ asignatura.nombre }}</td>
+                  <td>
+                    {% if asignatura.estado == 'A' %}
+                    <button class="btn btn-outline-dark" id="btnEditar" onclick="editarAsignatura('{{ asignatura.idAsignatura }}', '{{ asignatura.nombre }}')" data-toggle="tooltip" data-placement="bottom" title="Editar asignatura"> <i class="fas fa-edit"></i></button>
+                    <button class="btn btn-outline-dark" onclick="eliminarAsignatura({{ asignatura.idAsignatura }})" data-toggle="tooltip" data-placement="bottom" title="Eliminar asignatura"> <i class="far fa-trash-alt"></i></button>
+                    {% elif asignatura.estado == 'I' %}
+                    <button class="btn btn-outline-dark" onclick="habilitarAsignatura({{ asignatura.idAsignatura }})" data-toggle="tooltip" data-placement="bottom" title="Habilitar asignatura"> <i class="fas fa-trash-restore"></i></button>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+              </tbody>
+            </table>
+            <div class="float-right">
+                <form method="POST" id="frmFiltroAsignatura" class="d-none">
+                  {% csrf_token %}
+                  <input type="text" id="estado" name="estado">
+                </form>  
+                <a href="#" onclick="filtrarAsignatura('A')" class="card-link">Activos</a>
+                <a href="#" onclick="filtrarAsignatura('I')" class="card-link">Inactivos</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block agregarScript %}
+  <!-- Page level plugin JavaScript-->
+  <script src="../../static/vendor/datatables/jquery.dataTables.js"></script>
+  <script src="../../static/vendor/datatables/dataTables.bootstrap4.js"></script>
+  <!-- Demo scripts for this page-->
+  <script src="../../static/js/demo/datatables-demo.js"></script>
+  <script src="{% static 'js/asignatura/asignatura.js' %}"></script>
+{% endblock %}
