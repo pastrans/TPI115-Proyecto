@@ -1,7 +1,9 @@
 from django.urls import path
-from apps.inasistencia.views import pasarAsistencia, importCsv
+from apps.inasistencia.views import pasarAsistencia, importCsv, administrarAsistencia, asistenciaDiferida
 
 urlpatterns = [
-    path('pasar', pasarAsistencia, name='pasarAsistencia'),
+    path('', administrarAsistencia, name='administrarAsistencia'),
+    path('pasar/<int:idSeccionGrado>', pasarAsistencia, name='pasarAsistencia'),
+    path('diferida/<int:idSeccionGrado>/<slug:fecha>', asistenciaDiferida, name='asistenciaDiferida'),
     path('csv/<slug:fecha>', importCsv, name='importCsv'),
 ]

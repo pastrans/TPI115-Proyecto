@@ -12,5 +12,5 @@ class Amonestacion(models.Model):
     estudiante = models.ForeignKey(Estudiante, null=False, blank=False, on_delete=models.CASCADE)
     personal = models.ForeignKey(Personal, null=False, blank=False, on_delete=models.CASCADE)
     sancion = models.ForeignKey(Sancion, null=True, blank=True, on_delete=models.CASCADE)
-    horario = models.ForeignKey(HoraClase, null=True, blank=True, on_delete=models.CASCADE)
+    #horario = models.ForeignKey(HoraClase, null=True, blank=True, on_delete=models.CASCADE)
     fecha = models.DateField(auto_now=False)
