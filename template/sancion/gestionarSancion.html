@@ -1,0 +1,98 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}
+  Administrar sanciones
+{% endblock %}
+
+<!-- incio Bloques para las meta-->
+{% block descripcion %}
+  Asistencias del Instituto Cultural de Oxford El Salvador
+{% endblock %}
+
+{% block palabrasClave %}
+  "Oxford el Salvador, Colegio Oxford, Colegios de San Salvador , San Salvador, Asistencias Oxford"
+{% endblock %}
+
+{% block agregarMetas %}
+  <meta name="robots" content="follow">
+  <meta name="robots" content="index">
+  <meta name="googlebot" content="index">
+  <meta name="google-site-verification" content="ZhnGANpVN1--eBXiXa_0W4_q1pk-_HmJtN5VnrqYaW4" />
+{% endblock %}
+<!-- fin Bloques para las meta-->
+
+{% block listaRuta %}
+<li class="breadcrumb-item">
+  <a href="index.html">Inicio</a>
+</li>
+<li class="breadcrumb-item active">Nombre de la pagina</li>
+{% endblock %}
+
+{% block contenido %}
+  <h1>Administrar Sanciones</h1>
+  
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <form method="POST" id="frmSancion" action="">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="nombre">Descripcion:</label>
+                <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Descripcion de la sancion" autocomplete="off">
+              </div>
+              <button type="submit" class="btn btn-dark float-right">Guardar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="scope">Sancion</th>
+                  <th class="scope">Acciones</th>
+                </tr>
+              </thead>  
+              <tbody>
+                {% if sanciones %}
+                {% for sancion in sanciones %}
+                <tr>
+                  <td>{{ sancion.descripcion }}</td>
+                  <td>
+                    {% if sancion.estado == 'A' %}
+                    <button class="btn btn-outline-dark" id="btnEditar" onclick="editarSancion('{{ sancion.idSancion }}', '{{ sancion.descripcion }}')" data-toggle="tooltip" data-placement="bottom" title="Editar sancion"> <i class="fas fa-edit"></i></button>
+                    <button class="btn btn-outline-dark" onclick="eliminarSancion({{ sancion.idSancion }})" data-toggle="tooltip" data-placement="bottom" title="Eliminar sancion"> <i class="far fa-trash-alt"></i></button>
+                    {% elif sancion.estado == 'I' %}
+                    <button class="btn btn-outline-dark" onclick="habilitarSancion({{ sancion.idSancion }})" data-toggle="tooltip" data-placement="bottom" title="Habilitar sancion"> <i class="fas fa-trash-restore"></i></button>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+              </tbody>
+            </table>
+            <div class="float-right">
+                <form method="POST" id="frmFiltroSancion" class="d-none">
+                  {% csrf_token %}
+                  <input type="text" id="estado" name="estado">
+                </form>  
+                <a href="#" onclick="filtrarSancion('A')" class="card-link">Activos</a>
+                <a href="#" onclick="filtrarSancion('I')" class="card-link">Inactivos</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block agregarScript %}
+  <!-- Page level plugin JavaScript-->
+  <script src="../../static/vendor/datatables/jquery.dataTables.js"></script>
+  <script src="../../static/vendor/datatables/dataTables.bootstrap4.js"></script>
+  <!-- Demo scripts for this page-->
+  <script src="../../static/js/demo/datatables-demo.js"></script>
+  <script src="{% static 'js/sancion/sancion.js' %}"></script>
+{% endblock %}

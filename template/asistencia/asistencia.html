@@ -1,0 +1,90 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}
+  Administrar secciones
+{% endblock %}
+
+<!-- incio Bloques para las meta-->
+{% block descripcion %}
+  Asistencias del Instituto Cultural de Oxford El Salvador
+{% endblock %}
+
+{% block palabrasClave %}
+  "Oxford el Salvador, Colegio Oxford, Colegios de San Salvador , San Salvador, Asistencias Oxford"
+{% endblock %}
+
+{% block agregarMetas %}
+  <meta name="robots" content="follow">
+  <meta name="robots" content="index">
+  <meta name="googlebot" content="index">
+  <meta name="google-site-verification" content="ZhnGANpVN1--eBXiXa_0W4_q1pk-_HmJtN5VnrqYaW4" />
+{% endblock %}
+<!-- fin Bloques para las meta-->
+
+{% block listaRuta %}
+<li class="breadcrumb-item">
+  <a href="index.html">Inicio</a>
+</li>
+<li class="breadcrumb-item active">Asistencia a clases {{ comprobar }}</li>
+{% endblock %}
+
+{% block contenido %}
+  <h1 class="text-center">ASISTENCIA A CLASES GRADO: {{ seccionGrado.grado.nombre|upper }} -  {{ seccionGrado.seccion.nombre|upper }}</h1>
+  {% if fecha %}
+  <h2 class="text-center">Asistencia diferida | Fecha: {{ fecha }}</h2>
+  {% endif %}
+  <div class="col-s12">
+    <div class="card">
+        <div class="card-body">
+          <form method="POST">
+          {% csrf_token %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Código</th>
+                <th class="scope">Nombres</th>
+                <th class="scope">Apellidos</th>
+                <th class="scope text-center">Asistencia</th>
+              </tr>
+            </thead>  
+            <tbody>
+              {% if estudiantes %}
+              {% for estudiante in estudiantes %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ estudiante.codigo }}</td>
+                <td>{{ estudiante.nombre }}</td>
+                <td>{{ estudiante.apellido }}</td>
+                <td class="text-center">
+                {% if inasistencias %}
+                {% if not estudiante.codigo in inasistencias or asistenciaGrado %}
+                  <input type="checkbox" class="form-check-input" id="asistencias" name="asistencias" value="{{ estudiante.idEstudiante }}" checked>
+                {% else  %}
+                  <input type="checkbox" class="form-check-input" id="asistencias" name="asistencias" value="{{ estudiante.idEstudiante }}">
+                {% endif %}
+                {% else  %}
+                  <input type="checkbox" class="form-check-input" id="asistencias" name="asistencias" value="{{ estudiante.idEstudiante }}">
+                {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+          <button type="submit" class="btn btn-dark float-right">Guardar</button>
+          </form>
+        </div>
+      </div>
+  </div>
+  <br/>
+{% endblock %}
+
+{% block agregarScript %}
+  <!-- Page level plugin JavaScript-->
+  <script src="../../static/vendor/datatables/jquery.dataTables.js"></script>
+  <script src="../../static/vendor/datatables/dataTables.bootstrap4.js"></script>
+  <!-- Demo scripts for this page-->
+  <script src="../../static/js/demo/datatables-demo.js"></script>
+  <script src="{% static 'js/seccion/seccion.js' %}"></script>
+{% endblock %}
