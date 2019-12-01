@@ -43,7 +43,11 @@
                             <option value="0" disabled selected>Seleccione un estudiante</option>
                             {% if estudiantes %}
                             {% for estudiante in estudiantes %}
+                            {% if estudianteBuscar and estudianteBuscar.idEstudiante == estudiante.idEstudiante %}
+                            <option value="{{ estudiante.idEstudiante }}" selected >{{ estudiante.codigo }} - {{ estudiante.nombre }} {{ estudiante.apellido }}</option>
+                            {% else %}
                             <option value="{{ estudiante.idEstudiante }}">{{ estudiante.codigo }} - {{ estudiante.nombre }} {{ estudiante.apellido }}</option>
+                            {% endif %}
                             {% endfor %}
                             {% endif %}
                         </select>
@@ -51,8 +55,8 @@
                         <button type="submit" class="btn btn-outline-dark float-right">Buscar &nbsp;&nbsp;<i class="fas fa-search"></i></button>
                     </form>
                     <br/><br/><br/>
-                    {% if estudiante %}
-                        <p><b>Nombre: </b>{{ estudiante.nombre }} {{ estudiante.apellido }} ({{ estudiante.codigo }})</p>
+                    {% if estudianteBuscar %}
+                        <p><b>Nombre: </b>{{ estudianteBuscar.nombre }} {{ estudianteBuscar.apellido }} ({{ estudianteBuscar.codigo }})</p>
                     {% endif %}
                     <table class="table">
                         <tr>

@@ -1,10 +1,13 @@
 $(document).ready(function(){
-    $("#falta_id").hide();
-    $("#faltaLabel").hide();
+    //$("#falta_id").hide();
+    //$("#faltaLabel").hide();
     $("#tipoFalta").change(function(){
+        $("#falta_id").val(0);
+        $("#faltaLabel").show();
         $("#falta_id").show();
         $("#falta_id").children().hide();
         $(".tipoFalta" + $("#tipoFalta").val()).show();
+        $("#falta_id option[value=0]").show();
     });
 });
 

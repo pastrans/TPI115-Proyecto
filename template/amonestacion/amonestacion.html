@@ -31,6 +31,19 @@
 
 {% block contenido %}
   <h3 class="text-center">AMONESTACIONES</h3>
+  {% if errores %}
+  <div class="card">
+    <div class="card-header">ERROR AL GUARDAR LOS DATOS</div>
+    <div class="card-body">
+      <ul class="list-group">                
+        {% for error in errores %}
+        <li class="list-group-item list-group-item-danger">{{ error }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <br/>
+  {% endif %}
   <div class="row">
       <div class="col-sm-12">
           <div class="card">
@@ -58,12 +71,22 @@
                     {% endif %}
                 </select>
                 <br/>
-                <label for="falta" id="faltaLabel">Faltas</label>
+                <label for="falta_id" id="faltaLabel">Falta</label>
                 <select class="form-control" name="falta_id" id="falta_id">
                   <option value="0" disabled selected>Seleccione una falta</option>
                   {% if faltas %}
                   {% for falta in faltas %}
                   <option value="{{ falta.idFalta }}" class="tipoFalta{{ falta.tipoFalta_id }}">{{ falta.descripcion }}</option>
+                  {% endfor %}
+                  {% endif %}
+                </select>
+                <br/>
+                <label for="sancion_id" id="sancionLabel">Sanción</label>
+                <select class="form-control" name="sancion_id" id="sancion_id">
+                  <option value="0" disabled selected>No aplicar sanción</option>
+                  {% if sanciones %}
+                  {% for sancion in sanciones %}
+                  <option value="{{ sancion.idSancion }}">{{ sancion.descripcion }}</option>
                   {% endfor %}
                   {% endif %}
                 </select>

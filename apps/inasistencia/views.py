@@ -1,11 +1,13 @@
-from django.shortcuts import render
+from django.urls import reverse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from apps.estudiante.models import Estudiante
 from apps.inasistencia.models import Inasistencia, AsistenciaGrado
 from apps.seccionGrado.models import SeccionGrado
 from django.contrib.auth.decorators import login_required
 
 import datetime
-import csv, io, os
+import csv, io, os, re
 
 os.environ['TZ'] = 'America/El_Salvador'
 
@@ -84,10 +86,26 @@ def pasarAsistencia(request, idSeccionGrado):
     else:
         inasistenciasData = Inasistencia.objects.filter(fecha=datetime.date.today())
         for fila in inasistenciasData:
-            comprobar = "3"
             inasistencias.add(fila.estudiante.codigo)
     data = {'estudiantes' : estudiantes, 'inasistencias' : inasistencias, 'asistenciaGrado' : asistenciaGrado, 'seccionGrado' : seccionGrado}
     return render(request, 'asistencia/asistencia.html', data)
+
+def justificarView(request):
+    estudiantes = Estudiante.objects.filter(estado='A').order_by('apellido')
+    inasistencias = {}
+    estudianteBuscar = {}
+    if request.method == 'POST':
+        inasistencias = Inasistencia.objects.filter(estudiante_id=request.POST['estudiante_id'])
+        estudianteBuscar = Estudiante.objects.get(idEstudiante=request.POST['estudiante_id'])
+    data = {'estudiantes' : estudiantes, 'inasistencias' : inasistencias, 'estudianteBuscar': estudianteBuscar}
+    return render(request, 'asistencia/justificar.html', data)
+
+def justificar(request, idInasistencia):
+    
+    i = Inasistencia.objects.get(idInasistencia=idInasistencia)
+    i.estado = 'J'
+    i.save()
+    return HttpResponseRedirect(reverse('justificarView'))
 
 def importCsv(request, fecha):
     f = fecha
