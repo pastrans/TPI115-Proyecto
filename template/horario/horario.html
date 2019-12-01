@@ -33,12 +33,88 @@
 
 {% block contenido %}
   <h1>Administrar Horario</h1>
+  {%if personal != None%}
   <h3>Personal: {{personal.nombre}} {{personal.apellido}}</h3>
+  {%elif seccionGrado != None%}
+  <h3>{{seccionGrado.grado.nombre}}, sección {{seccionGrado.seccion.nombre}}</h3>
+  {%endif%}
   <hr>
   <div class="container">
-
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <form method="POST" id="frmSeccion" action="agregar">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4">                      
+                      <label for="asignaturaH">Asignatura:</label>
+                      <select name="asignaturaH" id="asignaturaH" class="form-control form-control-sm">
+                        {% for a in lstAsig%}
+                        <option value="{{a.idAsignatura}}">{{a.nombre}}</option>
+                        {%endfor%}
+                      </select>                      
+                    </div>
+                    <div class="col-md-4">
+                      <label for="personalH">Personal encargado:</label>
+                      {%if personal != None%}
+                      <input type="hidden" name="idOrigenHorario" id="idOrigenHorario" value="Per">
+                      <select name="personalH" id="personalH" class="form-control form-control-sm" readonly>
+                          <option value="{{personal.idPersonal}}" selected>{{personal.apellido}}, {{personal.nombre}}</option>
+                        </select>
+                      {%else%}
+                      <select name="personalH" id="personalH" class="form-control form-control-sm">
+                        {% for p in lstPer%}
+                        <option value="{{p.idPersonal}}">{{p.apellido}}, {{p.nombre}}</option>
+                        {%endfor%}
+                      </select>
+                      {%endif%}
+                    </div>
+                    <div class="col-md-4">
+                      <label for="seccionH">Seccion:</label>
+                      {%if seccionGrado != None%}
+                      <input type="hidden" name="idOrigenHorario" id="idOrigenHorario" value="Secc">
+                      <select name="seccionH" id="seccionH" class="form-control form-control-sm" readonly>
+                          <option value="{{seccionGrado.idSeccionGrado}}">{{seccionGrado.grado.nombre}}, sección {{seccionGrado.seccion.nombre}}</option>
+                        </select>
+                      {%else%}
+                      <select name="seccionH" id="seccionH" class="form-control form-control-sm">
+                        {% for s in lstSecc%}
+                        <option value="{{s.idSeccionGrado}}">{{s.grado.nombre}}, sección {{s.seccion.nombre}}</option>
+                        {%endfor%}
+                      </select>                          
+                      {%endif%}
+                    </div>                
+                </div><br>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label for="diaH">Día:</label>
+                    <select name="diaH" id="diaH" class="form-control form-control-sm">
+                      <option value="L">Lunes</option>
+                      <option value="M">Martes</option>
+                      <option value="X">Miercoles</option>
+                      <option value="J">Jueves</option>
+                      <option value="V">Viernes</option>                      
+                    </select>                          
+                  </div>
+                  <div class="col-md-6">
+                    <label for="tiempoH">Hora clase:</label>
+                    <select name="tiempoH" id="tiempoH" class="form-control form-control-sm">
+                      {% for t in tiempos%}
+                      <option value="{{t.idTiempo}}">{{t.horaInicial}} - {{t.horaFinal}}</option>
+                      {%endfor%}
+                    </select>                      
+                  </div>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-dark float-right">Guardar</button>
+              </form>
+            </div>
+          </div>
+        </div>
   </div>
-  <div class="container">
+  <br>
+  <div class="container table-responsive">
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -51,12 +127,33 @@
             </tr>
         </thead>
         <tbody>
-            {% for hors in horarios%}
+            {% for hors,tiempos in horarios%}
             <tr>
-                <th class="scope"> Hora </th>            
+                <th class="scope"> {{tiempos.horaInicial}} - <br> {{tiempos.horaFinal}}</th>
                 {%for h in hors%}
                 {%if h != None%}
-                <th>{{h.asignatura.nombre}}</th>
+                <th>
+                    <div class="row">
+                      <div class="col-md-9">
+                          {{h.asignatura.nombre}}
+                      </div>
+                      <div class="col-md-3">
+                        {%if personal != None%}
+                        <a href="P-{{personal.idPersonal}}/eliminar/{{h.idHoraClase}}" style=" color: red;"><i class="fas fa-times-circle"></i></a>
+                        {%elif seccionGrado != None%}
+                        <a href="S-{{seccionGrado.idSeccionGrado}}/eliminar/{{h.idHoraClase}}" style=" color: red;"><i class="fas fa-times-circle"></i></a>
+                        {%endif%}
+                      </div>
+                    </div>
+                    <!--VER SI SE LE AGREGA MAS INFORMACION AL HORARIO-->
+                    <!--div class="row"> 
+                        {%if personal != None%}
+                        {{h.seccionGrado.grado.nombre}}, seccion {{h.seccionGrado.seccion.nombre}}
+                        {%elif seccionGrado != None%}
+                        Prof. {{h.personal.nombre}}
+                        {%endif%}
+                    </div-->
+                </th>
                 {%else%}
                 <th>-</th>
                 {%endif%}

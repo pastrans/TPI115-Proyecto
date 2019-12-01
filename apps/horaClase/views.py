@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from apps.personal.models import Personal
 from apps.horaClase.models import HoraClase
 from apps.tiempo.models import Tiempo
+from apps.seccionGrado.models import SeccionGrado
+from apps.asignatura.models import Asignatura
+from datetime import datetime
 import itertools
 
 # Create your views here.
@@ -13,34 +16,95 @@ def redirectVacio(request):
 def resHorarioPnal(request,idPnal):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    horT = getHorTemplate(idPnal,'P')
+    horasT = getHorTemplate(idPnal,'P')    
     per = Personal.objects.get(idPersonal = idPnal)
     tiempos = getTiempos()
-    data = {'horarios' : horT, 'tiempos' : tiempos, 'personal' : per}                
+    lstPersonal = Personal.objects.filter(estado = 'A')
+    today = datetime.today()
+    lstSecciones = SeccionGrado.objects.filter(anio = today.year)    
+    listAsig = Asignatura.objects.filter(estado = 'A')
+    horT = zip(horasT,tiempos)
+    data = {'horarios' : horT, 'tiempos' : tiempos, 'personal' : per, 'seccionGrado' : None, 'lstSecc' : lstSecciones, 'lstPer' : lstPersonal, 'lstAsig' : listAsig} #Per p/ identificar
     return render(request, 'horario/horario.html',data)
 
 def resHorarioSecc(request,idSecc):
     if not request.session['tipo'] == 'P':
-        return redirect('/my')    
-    return render(request, 'horario/horario.html',None)
+        return redirect('/my')
+    horasT = getHorTemplate(idSecc,'S')
+    secc = SeccionGrado.objects.get(idSeccionGrado = idSecc)
+    tiempos = getTiempos()
+    lstPersonal = Personal.objects.filter(estado = 'A')
+    today = datetime.today()
+    lstSecciones = SeccionGrado.objects.filter(anio = today.year)    
+    listAsig = Asignatura.objects.filter(estado = 'A')
+    horT = zip(horasT,tiempos)
+    data = {'horarios' : horT, 'tiempos' : tiempos, 'seccionGrado' : secc, 'personal' : None, 'lstSecc' : lstSecciones, 'lstPer' : lstPersonal, 'lstAsig' : listAsig} #secc p/ identificar
+    return render(request, 'horario/horario.html',data)
+
+def agregarHoraClase(request):
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
+    if request.method == 'POST':
+        origen = request.POST['idOrigenHorario']
+        asignatura = Asignatura.objects.get(idAsignatura = request.POST['asignaturaH'])
+        personal = Personal.objects.get(idPersonal = request.POST['personalH'])
+        seccGrado = SeccionGrado.objects.get(idSeccionGrado = request.POST['seccionH'])
+        dia = request.POST['diaH']
+        tiempo = Tiempo.objects.get(idTiempo = request.POST['tiempoH'])
+        #validando que el horario agregado no tenga el personal o la seccion en la hora deseada
+        if ValidarChoque(tiempo,dia,personal,seccGrado):
+            horaC = HoraClase(asignatura = asignatura, seccionGrado = seccGrado, personal = personal, tiempo = tiempo, dia = dia)
+            horaC.save()
+        else:
+            error = "Ya esta ocupado :'v"
+        urlRED = ''
+        if origen == 'Per':
+            urlRED = '/horaClase/horarioPersonal/' + str(personal.idPersonal)
+        else:
+            urlRED = '/horaClase/horarioSeccion/' + str(seccGrado.idSeccionGrado)
+    return redirect (urlRED)
+
+def eliminarHoraClase(request,strOrigen,idHC):
+    arrO = strOrigen.split('-')
+    hClase = HoraClase.objects.get(idHoraClase = idHC)
+    hClase.delete()
+    red = ''
+    if arrO[0] == 'P':
+        red = '/horaClase/horarioPersonal/' + str(arrO[1])
+    else:
+        red = '/horaClase/horarioSeccion/' + str(arrO[1])
+    return redirect (red)
+
+def ValidarChoque(tiempo, dia, personal, seccionG):
+    today = datetime.today()
+    # horario via personal 
+    Hor1 = HoraClase.objects.filter(personal = personal.idPersonal, dia = dia, tiempo = tiempo.idTiempo, seccionGrado__anio = today.year)
+    #horario via seccionGrado
+    Hor2 = HoraClase.objects.filter(seccionGrado = seccionG.idSeccionGrado, dia = dia, tiempo = tiempo.idTiempo, seccionGrado__anio = today.year)
+    #Validando (tienen que ser null para agg)
+    val = False
+    if not Hor1.exists() and not Hor2.exists(): #hay espacio para agregar
+        val = True
+    return val
 
 def getHorarioOrd(id, tipo):
+    today = datetime.today()
     if tipo == 'P': #viene de personal
-        horario = [*HoraClase.objects.filter(personal = id, dia = 'L').order_by('tiempo__horaInicial'),
-        *HoraClase.objects.filter(personal = id, dia = 'M').order_by('tiempo__horaInicial'),
-        *HoraClase.objects.filter(personal = id, dia = 'X').order_by('tiempo__horaInicial'),
-        *HoraClase.objects.filter(personal = id, dia = 'J').order_by('tiempo__horaInicial'),
-        *HoraClase.objects.filter(personal = id, dia = 'V').order_by('tiempo__horaInicial')]
+        horario = [*HoraClase.objects.filter(personal = id, dia = 'L', seccionGrado__anio = today.year).order_by('tiempo__horaInicial'),
+        *HoraClase.objects.filter(personal = id, dia = 'M', seccionGrado__anio = today.year).order_by('tiempo__horaInicial'),
+        *HoraClase.objects.filter(personal = id, dia = 'X', seccionGrado__anio = today.year).order_by('tiempo__horaInicial'),
+        *HoraClase.objects.filter(personal = id, dia = 'J', seccionGrado__anio = today.year).order_by('tiempo__horaInicial'),
+        *HoraClase.objects.filter(personal = id, dia = 'V', seccionGrado__anio = today.year).order_by('tiempo__horaInicial')]
     elif tipo == 'S': #viene de seccion
-        horario = [*HoraClase.objects.filter(seccionGrado = id, dia = 'L').order_by('tiempo__horaInicial'),
-        *HoraClase.objects.filter(seccionGrado = id, dia = 'M').order_by('tiempo__horaInicial'),
-        *HoraClase.objects.filter(seccionGrado = id, dia = 'X').order_by('tiempo__horaInicial'),
-        *HoraClase.objects.filter(seccionGrado = id, dia = 'J').order_by('tiempo__horaInicial'),
-        *HoraClase.objects.filter(seccionGrado = id, dia = 'V').order_by('tiempo__horaInicial')]
+        horario = [*HoraClase.objects.filter(seccionGrado = id, dia = 'L', seccionGrado__anio = today.year).order_by('tiempo__horaInicial'),
+        *HoraClase.objects.filter(seccionGrado = id, dia = 'M', seccionGrado__anio = today.year).order_by('tiempo__horaInicial'),
+        *HoraClase.objects.filter(seccionGrado = id, dia = 'X', seccionGrado__anio = today.year).order_by('tiempo__horaInicial'),
+        *HoraClase.objects.filter(seccionGrado = id, dia = 'J', seccionGrado__anio = today.year).order_by('tiempo__horaInicial'),
+        *HoraClase.objects.filter(seccionGrado = id, dia = 'V', seccionGrado__anio = today.year).order_by('tiempo__horaInicial')]
     return horario
 
 def getTiempos():
-    tiempo = Tiempo.objects.all()
+    tiempo = Tiempo.objects.all().order_by('horaInicial')
     return tiempo
 
 def getHorTemplate(id,tipo):
