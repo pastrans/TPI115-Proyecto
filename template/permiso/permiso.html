@@ -79,7 +79,7 @@
                               {{modulo.nombre}}
                             </label>
                           </div>
-                          {% if not forloop.counter0|divisibleby:2 %}
+                          {% if not forloop.counter0|divisibleby:2 or forloop.last %}
                             </div>
                           {% endif %}
                         {% endfor %}   
@@ -122,7 +122,7 @@
                           <div class="col-sm-6">
                             - {{modulo.nombre}}                            
                           </div>
-                          {% if not forloop.counter0|divisibleby:2 %}
+                          {% if not forloop.counter0|divisibleby:2 or forloop.last %}
                             </div>
                           {% endif %}
                         {% endfor %}
