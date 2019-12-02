@@ -70,7 +70,7 @@
                   <td>{{t.horaFinal}}</td>
                   <td>
                     {% if t.estado == 'A' %}
-                    <button class="btn btn-outline-dark" id="btnEditar" onclick="editTiempo('{{ t.idTiempo }}', '{{ t.horaInicial }}', '{{t.horaFinal}}')" data-toggle="tooltip" data-placement="bottom" title="Editar sección"> <i class="fas fa-edit"></i></button>
+                    <button disabled class="btn btn-outline-dark" id="btnEditar" onclick="editTiempo('{{ t.idTiempo }}', '{{ t.horaInicial }}', '{{t.horaFinal}}')" data-toggle="tooltip" data-placement="bottom" title="Editar sección"> <i class="fas fa-edit"></i></button>
                     <button class="btn btn-outline-dark" onclick="elimTiempo('{{ t.idTiempo }}')" data-toggle="tooltip" data-placement="bottom" title="Eliminar sección"> <i class="far fa-trash-alt"></i></button>
                     {% elif t.estado == 'I' %}
                     <button class="btn btn-outline-dark" onclick="habTiempo('{{ t.idTiempo }}')" data-toggle="tooltip" data-placement="bottom" title="Habilitar sección"> <i class="fas fa-trash-restore"></i></button>

@@ -26,7 +26,11 @@
   <a href="index.html">Inicio</a>  
 </li>
 <li class="breadcrumb-item">
+  {%if personal != None%}
   <a href="/personal/">Personal</a>
+  {%elif seccionGrado != None%}
+  <a href="/seccionGrado/">Seccion-Grado</a>
+  {%endif%}  
 </li>
 <li class="breadcrumb-item active">Horario</li>
 {% endblock %}

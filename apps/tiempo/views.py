@@ -24,7 +24,7 @@ def agregarTiempo(request):
         t.save()
     return redirect('resumenTiempo')
 
-def agregarTiempo(request,idTiempo):
+def editarTiempo(request,idTiempo):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
     if request.method == 'POST':
