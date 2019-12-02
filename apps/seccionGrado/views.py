@@ -23,7 +23,7 @@ def resumenSeccionGrado(request):
     return render(request, 'seccionGrado/administrar.html', data)
 
 @login_required
-# Código para agregar una Grado
+# Código para agregar una SeccionGrado
 def agregarSeccionGrado(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
@@ -36,6 +36,22 @@ def agregarSeccionGrado(request):
         personal = request.POST['personal']
         turno = request.POST['turno']
         sg = SeccionGrado(grado_id = grado, anio=anio , seccion_id=seccion, especialidad_id=especialidad, personal_id=personal , turno =turno)
+        sg.save()
+        return redirect('resumenSeccionGrado')
+    return redirect('resumenSeccionGrado')
+
+# Código para editar una SeccionGrado
+@login_required
+def editarSeccionGrado(request, idSeccionGrado):
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
+    if request.method == 'POST':
+        sg = SeccionGrado.objects.get(idSeccionGrado = idSeccionGrado)
+        sg.grado_id = request.POST['grado']
+        sg.seccion_id = request.POST['seccion']
+        sg.especialidad_id=request.POST['especialidad']
+        sg.personal_id=request.POST['personal']
+        sg.turno = request.POST['turno']
         sg.save()
         return redirect('resumenSeccionGrado')
     return redirect('resumenSeccionGrado')

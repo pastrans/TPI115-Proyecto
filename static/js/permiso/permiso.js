@@ -1,15 +1,11 @@
-function editPermiso(idPnal, nombre, apellido, codigo){
-    $("#frmSeccion").attr('action', 'editar/' + idPnal);
-    $("#nombreP").val(nombre);
-    $("#apellidoP").val(apellido);
-    $("#codigoP").val(codigo);
+function editPermiso(idPermiso){
+    location.href = '/permiso/editarPermiso/' + idPermiso
 }
 
-//COMPLETADO
 function elimPermiso(idPermiso){
     Swal.fire({
         title: '¿Seguro que desea desactivar el permiso?',
-        text: "Los datos relacionados con el permiso ya no serán visibles",
+        text: "Los datos relacionados con el permiso ya no serán visibles.",
         type: 'info',
         showCancelButton: true,
         confirmButtonText: 'Sí, desactivar',
@@ -21,22 +17,21 @@ function elimPermiso(idPermiso){
     });
 }
 
-function habPnal(idPnal){
+function habPermiso(idPermiso){
     Swal.fire({
-        title: '¿Seguro de activar la sección?',
-        text: "Los datos relacionados con la sección ahora serán visibles",
+        title: '¿Seguro que desea activar el permiso?',
+        text: "Los datos relacionados con el permiso ahora serán visibles.",
         type: 'info',
         showCancelButton: true,
         confirmButtonText: 'Sí, activar',
         cancelButtonText: 'Cancelar'
         }).then((result) => {
         if (result.value) {
-            location.href = '/personal/cambiarEstado/' + idPnal + '/A'
+            location.href = '/permiso/cambiarEstado/' + idPermiso + '/A'
         }
     });
 }
 
-//COMPLETADO
 function filtrarSeccion(estado){
     $("#estado").val(estado);
     $("#frmFiltroSeccion").submit();

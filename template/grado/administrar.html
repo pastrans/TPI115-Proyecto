@@ -22,10 +22,10 @@
 <!-- fin Bloques para las meta-->
 
 {% block listaRuta %}
-<li class="breadcrumb-item">
-  <a href="index.html">Inicio</a>
+<li class="breadcrumb-item active" >
+  <a href="{% url 'index' %}">Inicio</a>
 </li>
-<li class="breadcrumb-item active">Nombre de la pagina</li>
+<li class="breadcrumb-item" > <a href="/grado">Grado </a></li>
 {% endblock %}
 
 {% block contenido %}
