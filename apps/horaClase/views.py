@@ -5,6 +5,7 @@ from apps.tiempo.models import Tiempo
 from apps.seccionGrado.models import SeccionGrado
 from apps.asignatura.models import Asignatura
 from datetime import datetime
+from django.contrib.auth.decorators import login_required
 import itertools
 
 # Create your views here.

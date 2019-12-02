@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from apps.tiempo.models import Tiempo
 from datetime import datetime
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 @login_required
