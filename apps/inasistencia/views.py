@@ -13,6 +13,8 @@ os.environ['TZ'] = 'America/El_Salvador'
 
 @login_required
 def administrarAsistencia(request):
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
     gradosListados = AsistenciaGrado.objects.filter(fecha=datetime.date.today()).values('seccionGrado_id')
     gl = set()
     for gradoListado in gradosListados:
@@ -23,6 +25,8 @@ def administrarAsistencia(request):
 
 @login_required
 def asistenciaDiferida(request, idSeccionGrado, fecha):
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
     seccionGrado = SeccionGrado.objects.get(idSeccionGrado=idSeccionGrado)
     estudiantes = Estudiante.objects.filter(seccionGrado_id=idSeccionGrado, estado='A').order_by('apellido')
     d = fecha[0:2]
@@ -59,6 +63,8 @@ def asistenciaDiferida(request, idSeccionGrado, fecha):
 
 @login_required
 def pasarAsistencia(request, idSeccionGrado):
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
     seccionGrado = SeccionGrado.objects.get(idSeccionGrado=idSeccionGrado)
     estudiantes = Estudiante.objects.filter(seccionGrado_id=idSeccionGrado, estado='A').order_by('apellido')
     inasistencias = set()
@@ -91,6 +97,8 @@ def pasarAsistencia(request, idSeccionGrado):
     return render(request, 'asistencia/asistencia.html', data)
 
 def justificarView(request):
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
     estudiantes = Estudiante.objects.filter(estado='A').order_by('apellido')
     inasistencias = {}
     estudianteBuscar = {}
@@ -101,7 +109,8 @@ def justificarView(request):
     return render(request, 'asistencia/justificar.html', data)
 
 def justificar(request, idInasistencia):
-    
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
     i = Inasistencia.objects.get(idInasistencia=idInasistencia)
     i.estado = 'J'
     i.save()

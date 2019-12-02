@@ -11,6 +11,8 @@ import datetime, re
 # Create your views here.
 @login_required
 def amonestacionIndex(request):
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
     data = {}
     errores = set()
     estudiantes = Estudiante.objects.filter(estado='A').order_by('apellido')
@@ -33,6 +35,8 @@ def amonestacionIndex(request):
 
 @login_required
 def amonestacionBuscar(request):
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
     data = {}
     amonestaciones = {}
     estudiante = {}
@@ -46,6 +50,8 @@ def amonestacionBuscar(request):
     return render(request, 'amonestacion/buscar.html', data)
 
 def amonestacionEliminar(request, idAmonestacion):
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
     a = Amonestacion.objects.get(idAmonestacion=idAmonestacion)
     a.delete()
     return redirect('amonestacionBuscar')
