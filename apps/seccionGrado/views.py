@@ -53,5 +53,5 @@ def editarSeccionGrado(request, idSeccionGrado):
         sg.personal_id=request.POST['personal']
         sg.turno = request.POST['turno']
         sg.save()
-        return redirect('resumenSeccion')
-    return redirect('resumenSeccion')
+        return redirect('resumenSeccionGrado')
+    return redirect('resumenSeccionGrado')
