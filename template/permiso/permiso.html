@@ -1,0 +1,155 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}
+  Administrar permisos
+{% endblock %}
+
+<!-- incio Bloques para las meta-->
+{% block descripcion %}
+  Personal del Instituto Cultural de Oxford El Salvador
+{% endblock %}
+
+{% block palabrasClave %}
+  "Oxford el Salvador, Colegio Oxford, Colegios de San Salvador , San Salvador, Asistencias Oxford"
+{% endblock %}
+
+{% block agregarMetas %}
+  <meta name="robots" content="follow">
+  <meta name="robots" content="index">
+  <meta name="googlebot" content="index">
+  <meta name="google-site-verification" content="ZhnGANpVN1--eBXiXa_0W4_q1pk-_HmJtN5VnrqYaW4" />
+{% endblock %}
+<!-- fin Bloques para las meta-->
+
+{% block listaRuta %}
+<li class="breadcrumb-item">
+  <a href="index.html">Inicio</a>
+</li>
+<li class="breadcrumb-item active">Permiso</li>
+{% endblock %}
+
+{% block contenido %}
+    <!-- Inicio contenido -->
+    <h1>Administrar Permisos</h1>
+
+    <div class="row">
+      <!-- Ingreso de nuevo permiso -->
+      <div class="col-md-12">        
+        <div class="card">
+          <div class="card-body">
+            <form method="POST" id="frmSeccion" action="agregar">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-6">
+                      <label for="nombrePermiso">Nombre:</label>
+                      <input type="text" class="form-control" id="nombrePermiso" name="nombrePermiso" placeholder="Nombre del permiso" autocomplete="off">
+                      <br>
+                </div>
+                <div class='col-md-6'>
+                  <label>Módulos de acceso:</label>                  
+                  {% if modulos %}
+                    <div class="card">
+                      <div class="card-body">            
+                        {% for modulo in modulos %}
+                          {% if forloop.counter0|divisibleby:2 %}
+                            <div class="row">
+                          {% endif %}
+                          <div class="form-check col-sm-6">
+                            <input class="form-check-input position-static" type="checkbox" value={{modulo.idModulo}}
+                            name="modulos" id="modulo{{modulo.idModulo}}">
+                            {% if editando == True %}
+                              {% for modulo2 in permiso.modulo.all %}
+                                {% if modulo.idModulo == modulo2.idModulo %}
+                                checked
+                                {% endif %}                            
+                              {% endfor %}
+                            {% endif %}
+                            <label class="form-check-label" for="modulo{{modulo.idModulo}}">
+                              {{modulo.nombre}}
+                            </label>
+                          </div>
+                          {% if not forloop.counter0|divisibleby:2 %}
+                            </div>
+                          {% endif %}
+                        {% endfor %}   
+                      </div>
+                    </div>  
+                  {% endif %}              
+                </div>            
+              </div>
+              <br>
+              <button type="submit" class="btn btn-dark float-right">Guardar</button>
+            </form>
+          </div>
+        </div>
+      </div> <!-- Fin nuevo permiso -->
+
+      <!-- Resumen permisos -->
+      <div class="col-md-12">        
+        <div class="card">
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="scope" style='width: 33%;'>Nombre</th>
+                  <th class="scope" style='width: 33%;'>Módulos</th>
+                  <th class="scope" style='width: 33%;'>Acciones</th>                  
+                  <th></th>
+                </tr>
+              </thead>  
+              <tbody>
+                {% for permiso in permisos %}
+                <tr>                    
+                  <td>{{permiso.nombre}}</td>
+                  <td>
+                    <div class="row">
+                      <div class='col-md-12'>
+                          {% for modulo in permiso.modulo.all %}
+                          {% if forloop.counter0|divisibleby:2 %}
+                            <div class="row">
+                          {% endif %}
+                          <div class="col-sm-6">
+                            - {{modulo.nombre}}                            
+                          </div>
+                          {% if not forloop.counter0|divisibleby:2 %}
+                            </div>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    </div>  
+                  </td>
+                  <td>
+                    {% if permiso.estado == 'A' %}
+                    <button class="btn btn-outline-dark" onclick="editPermiso('{{permiso.idPermiso}}' ,'{{permiso.nombre}}', '{{permiso.modulo}}');" data-toggle="tooltip" data-placement="bottom" title="Editar permiso"> <i class="fas fa-edit"></i></button>
+                    <button class="btn btn-outline-dark" onclick="elimPermiso('{{permiso.idPermiso}}');" data-toggle="tooltip" data-placement="bottom" title="Eliminar permiso"> <i class="far fa-trash-alt"></i></button>
+                    {% elif p.estado == 'I' %}
+                    <button class="btn btn-outline-dark" onclick="habPnal('{{p.idPersonal}}');" data-toggle="tooltip" data-placement="bottom" title="Habilitar personal"> <i class="fas fa-trash-restore"></i></button>
+                    {% endif %}
+                  </td>                    
+                </tr>
+                {%endfor%}
+              </tbody>
+            </table>
+            <div class="float-right">
+              <form method="POST" id="frmFiltroSeccion" class="d-none">
+                {% csrf_token %}
+                <input type="text" id="estado" name="estado">
+              </form>  
+              <a href="#" onclick="filtrarSeccion('A')" class="card-link">Activos</a> <!--Filtrar Seccion A o I-->
+              <a href="#" onclick="filtrarSeccion('I')" class="card-link">Inactivos</a>
+            </div>
+          </div>
+        </div>
+      </div> <!-- Fin resumen permisos -->
+    </div>   
+    <!-- Fin contenido -->
+{% endblock contenido %}
+
+{% block agregarScript %}
+  <!-- Page level plugin JavaScript-->
+  <script src="../../static/vendor/datatables/jquery.dataTables.js"></script>
+  <script src="../../static/vendor/datatables/dataTables.bootstrap4.js"></script>
+  <!-- Demo scripts for this page-->
+  <script src="../../static/js/demo/datatables-demo.js"></script>
+  <script src="{% static 'js/permiso/permiso.js' %}"></script>
+{% endblock agregarScript %}
