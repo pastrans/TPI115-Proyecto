@@ -22,10 +22,10 @@
 <!-- fin Bloques para las meta-->
 
 {% block listaRuta %}
-<li class="breadcrumb-item">
-  <a href="index.html">Inicio</a>
+<li class="breadcrumb-item active" >
+  <a href="{% url 'index' %}">Inicio</a>
 </li>
-<li class="breadcrumb-item active">Nombre de la pagina</li>
+<li class="breadcrumb-item" > <a href="/seccionGrado">Grado y Seccion</a></li>
 {% endblock %}
 
 {% block contenido %}
@@ -35,7 +35,7 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-body">
-            <form method="POST" id="frmSeccion" action="">
+            <form method="POST" id="frmSeccionGrado" action="">
               {% csrf_token %}
               <div class="form-group">
 
@@ -133,7 +133,7 @@
                   <td>{{ sg.personal.nombre}}</td>
                   <td>{{ sg.get_turno_display}}</td>
                   <td>
-                    <button class="btn btn-outline-dark" id="btnEditar" onclick="editarSeccion('{{ seccion.idSeccion }}', '{{ seccion.nombre }}')" data-toggle="tooltip" data-placement="bottom" title="Editar sección"> <i class="fas fa-edit"></i></button>
+                    <button class="btn btn-outline-dark" id="btnEditar" onclick="editarSeccionGrado('{{ sg.idSeccionGrado }}', '{{ sg.grado.idGrado }}' , '{{  sg.seccion.idSeccion }}','{{ sg.especialidad.idEspecialidad }}', '{{ sg.personal.idPersonal }}', '{{ sg.turno }}')" data-toggle="tooltip" data-placement="bottom" title="Editar Grado y sección"> <i class="fas fa-edit"></i></button>
                   </td>
                 </tr>
                 {% endfor %}
