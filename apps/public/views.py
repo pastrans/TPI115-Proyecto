@@ -22,8 +22,8 @@ def index(request):
 
 class Pdf(View):
     def get(self, request):
-        if not request.session['tipo'] == 'E':
-            return redirect('index')
+        """if not request.session['tipo'] == 'E' or request.session['tipo'] == 'P':
+            return redirect('index')"""
        
         today = timezone.now()
         estudiante = Estudiante.objects.get(idEstudiante=request.session['id'])

@@ -1,13 +1,26 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+
 from apps.estudiante.models import Estudiante
 from apps.falta.models import Falta
 from apps.tipoFalta.models import TipoFalta
 from apps.personal.models import Personal
 from apps.amonestacion.models import Amonestacion
 from apps.sancion.models import Sancion
+from apps.impuntualidad.models import Impuntualidad
+from apps.inasistencia.models import Inasistencia
+from apps.observacion.models import Observacion
+
 from django.contrib.auth.decorators import login_required
+
 import datetime, re
+from io import BytesIO
+from django.template.loader import get_template
+import xhtml2pdf.pisa as pisa
+from django.views.generic import View
+
+from django.utils import timezone
+
 # Create your views here.
 @login_required
 def amonestacionIndex(request):
@@ -55,6 +68,41 @@ def amonestacionEliminar(request, idAmonestacion):
     a = Amonestacion.objects.get(idAmonestacion=idAmonestacion)
     a.delete()
     return redirect('amonestacionBuscar')
+
+
+def Pdf(request):
+    if request.POST['idEstudiante']:
+        today = timezone.now()
+        estudiante = Estudiante.objects.get(idEstudiante=request.POST['idEstudiante'])
+        amonestaciones = Amonestacion.objects.filter(estudiante=estudiante).order_by('fecha')
+        llegadasTarde = Impuntualidad.objects.filter(estudiante=estudiante).order_by('fechaHora')
+        inasistencias = Inasistencia.objects.filter(estudiante=estudiante).order_by('fecha')
+        observaciones = Observacion.objects.filter(estudiante=estudiante).order_by('fecha')
+        params = {
+            'observaciones' : observaciones,
+            'inasistencias' : inasistencias,
+            'llegadasTarde' : llegadasTarde,
+            'amonestaciones' : amonestaciones,
+            'estudiante' : estudiante,
+            'today': today,
+            'request': request
+        }
+        return Render.render('public/pdf.html', params)
+    else:
+        return redirect('amonestacionBuscar')
+
+class Render:
+
+    @staticmethod
+    def render(path: str, params: dict):
+        template = get_template(path)
+        html = template.render(params)
+        response = BytesIO()
+        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
+        if not pdf.err:
+            return HttpResponse(response.getvalue(), content_type='application/pdf')
+        else:
+            return HttpResponse("Error Rendering PDF", status=400)
 
 def validar(falta, sancion, estudiante):
     errores = set()
