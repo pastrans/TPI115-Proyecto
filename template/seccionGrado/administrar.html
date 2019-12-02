@@ -134,7 +134,7 @@
                   <td>{{ sg.get_turno_display}}</td>
                   <td>
                     <button class="btn btn-outline-dark" id="btnEditar" onclick="editarSeccionGrado('{{ sg.idSeccionGrado }}', '{{ sg.grado.idGrado }}' , '{{  sg.seccion.idSeccion }}','{{ sg.especialidad.idEspecialidad }}', '{{ sg.personal.idPersonal }}', '{{ sg.turno }}')" data-toggle="tooltip" data-placement="bottom" title="Editar Grado y sección"> <i class="fas fa-edit"></i></button>
-                  </td>
+                    <button class="btn btn-outline-dark" onclick="location.href='/horaClase/horarioSeccion/{{ sg.idSeccionGrado}}'" data-toggle="tooltip" data-placement="bottom" title="Gestionar Horario"> <i class="far fa-calendar-alt"></i></button                  </td>
                 </tr>
                 {% endfor %}
                 {% endif %}
