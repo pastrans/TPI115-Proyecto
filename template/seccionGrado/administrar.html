@@ -1,0 +1,167 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}
+  Administrar secciones
+{% endblock %}
+
+<!-- incio Bloques para las meta-->
+{% block descripcion %}
+  Asistencias del Instituto Cultural de Oxford El Salvador
+{% endblock %}
+
+{% block palabrasClave %}
+  "Oxford el Salvador, Colegio Oxford, Colegios de San Salvador , San Salvador, Asistencias Oxford"
+{% endblock %}
+
+{% block agregarMetas %}
+  <meta name="robots" content="follow">
+  <meta name="robots" content="index">
+  <meta name="googlebot" content="index">
+  <meta name="google-site-verification" content="ZhnGANpVN1--eBXiXa_0W4_q1pk-_HmJtN5VnrqYaW4" />
+{% endblock %}
+<!-- fin Bloques para las meta-->
+
+{% block listaRuta %}
+<li class="breadcrumb-item">
+  <a href="index.html">Inicio</a>
+</li>
+<li class="breadcrumb-item active">Nombre de la pagina</li>
+{% endblock %}
+
+{% block contenido %}
+  <h1>Administrar Grados y Secciones</h1>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <form method="POST" id="frmSeccion" action="">
+              {% csrf_token %}
+              <div class="form-group">
+
+                <!-- select para grado--->
+                <di class = "row">
+                <label class="col-md-3" for="grado">Grado:</label>
+                <select class="form-control col-md-8" name="grado" id = "grado" autocomplete="off" required>
+                  {% for grado in grados %}
+                  <!--get_nivel_display--->
+                  <option  value= "{{grado.idGrado}}">{{grado.nombre}}</option>
+                  {% endfor %}
+                </select>
+
+                </di>
+                <br>
+                <!-- fin select grado--->
+                  <!-- select para seccion--->
+                <di class="row">
+                  <label class="col-md-3" for="seccion">Seccion:</label>
+                  <select class="form-control col-md-8" name="seccion" id = "seccion" autocomplete="off" required>
+                    {% for seccion in secciones %}
+                    <option  value= "{{seccion.idSeccion}}">{{seccion.nombre}}</option>
+                    {% endfor %}
+                  </select>
+
+                </di>
+                <br>
+                <!-- fin select seccion--->
+                <!-- select para personal --->
+                <di class="row">
+                <label class="col-md-3" for="personal">Personal:</label>
+                <select class="form-control col-md-8" name="personal" id = "personal" autocomplete="off" required>
+                  {% for personal in personals %}
+                  <option  value= "{{personal.idPersonal}}">{{personal.nombre}}</option>
+                  {% endfor %}
+                </select>
+
+                </di>
+                <br>
+                <!-- fin select personal--->
+                <!-- select para especialidad --->
+                <div class="row">
+                <label class="col-md-3" for="especialidad">Especialidad:</label>
+                <select class="form-control col-md-8" name="especialidad" id = "especialidad" autocomplete="off" required>
+                  {% for especialidad in especialidades %}
+                  <option  value= "{{especialidad.idEspecialidad}}">{{especialidad.nombre}}</option>
+                  {% endfor %}
+                </select>
+
+                </div>
+                <br>
+                <!-- fin select especilidad--->
+
+                <!-- select para turno --->
+                <div class="row">
+                <label class="col-md-3" for="especialidad">Turno:</label>
+                <select class="form-control col-md-8" name="turno" id = "turno" autocomplete="off" required>
+                  <option  value= "M">Matutino</option>
+                  <option  value= "V">Vespertino</option>
+                </select>
+
+                </div>
+                <!-- fin select turno--->
+              </div>
+              <div class="row">
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-dark float-center col-md-3"  >Guardar</button>
+                </div>
+
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="scope">Nombre</th>
+                  <th class="scope">Especialidad</th>
+                  <th class="scope">Personal</th>
+                  <th class="scope">Turno</th>
+                  <th class="scope">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if seccionGrados %}
+                {% for sg in seccionGrados %}
+                <tr>
+                  <td>{{ sg.grado.nombre}} {{ sg.seccion.nombre}}</td>
+                  <td>{{ sg.especialidad.nombre}}</td>
+                  <td>{{ sg.personal.nombre}}</td>
+                  <td>{{ sg.get_turno_display}}</td>
+                  <td>
+                    <button class="btn btn-outline-dark" id="btnEditar" onclick="editarSeccion('{{ seccion.idSeccion }}', '{{ seccion.nombre }}')" data-toggle="tooltip" data-placement="bottom" title="Editar sección"> <i class="fas fa-edit"></i></button>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+              </tbody>
+            </table>
+            <!-- select para una mejora que te permita eliminar --->
+            <!--
+            <div class="float-right">
+                <form method="POST" id="frmFiltroSeccion" class="d-none">
+                  {% csrf_token %}
+                  <input type="text" id="estado" name="estado">
+                </form>
+                <a href="#" onclick="filtrarSeccion('A')" class="card-link">Activos</a>
+                <a href="#" onclick="filtrarSeccion('I')" class="card-link">Inactivos</a>
+            </div>
+            --->
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block agregarScript %}
+  <!-- Page level plugin JavaScript-->
+  <script src="../../static/vendor/datatables/jquery.dataTables.js"></script>
+  <script src="../../static/vendor/datatables/dataTables.bootstrap4.js"></script>
+  <!-- Demo scripts for this page-->
+  <script src="../../static/js/demo/datatables-demo.js"></script>
+  <script src="{% static 'js/seccionGrado/seccionGrado.js' %}"></script>
+{% endblock %}

@@ -25,3 +25,8 @@ function eliminar(idAmonestacion){
         }
     });
 }
+
+function verReporte(){
+    $("#idEstudiante").val($("#estudiante").val());
+    $("#frmReporte").submit();
+}

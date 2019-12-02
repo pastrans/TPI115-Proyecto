@@ -5,14 +5,17 @@ from apps.tiempo.models import Tiempo
 from apps.seccionGrado.models import SeccionGrado
 from apps.asignatura.models import Asignatura
 from datetime import datetime
+from django.contrib.auth.decorators import login_required
 import itertools
 
 # Create your views here.
+@login_required
 def redirectVacio(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')    
     return render(request, 'index/index.html',None)
 
+@login_required
 def resHorarioPnal(request,idPnal):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
@@ -27,6 +30,7 @@ def resHorarioPnal(request,idPnal):
     data = {'horarios' : horT, 'tiempos' : tiempos, 'personal' : per, 'seccionGrado' : None, 'lstSecc' : lstSecciones, 'lstPer' : lstPersonal, 'lstAsig' : listAsig} #Per p/ identificar
     return render(request, 'horario/horario.html',data)
 
+@login_required
 def resHorarioSecc(request,idSecc):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
@@ -41,6 +45,7 @@ def resHorarioSecc(request,idSecc):
     data = {'horarios' : horT, 'tiempos' : tiempos, 'seccionGrado' : secc, 'personal' : None, 'lstSecc' : lstSecciones, 'lstPer' : lstPersonal, 'lstAsig' : listAsig} #secc p/ identificar
     return render(request, 'horario/horario.html',data)
 
+@login_required
 def agregarHoraClase(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
@@ -64,6 +69,7 @@ def agregarHoraClase(request):
             urlRED = '/horaClase/horarioSeccion/' + str(seccGrado.idSeccionGrado)
     return redirect (urlRED)
 
+@login_required
 def eliminarHoraClase(request,strOrigen,idHC):
     arrO = strOrigen.split('-')
     hClase = HoraClase.objects.get(idHoraClase = idHC)

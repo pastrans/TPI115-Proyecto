@@ -52,7 +52,14 @@
                             {% endif %}
                         </select>
                         <br/><br/>
-                        <button type="submit" class="btn btn-outline-dark float-right">Buscar &nbsp;&nbsp;<i class="fas fa-search"></i></button>
+                          <button type="submit" class="btn btn-outline-dark float-right">Buscar &nbsp;&nbsp;<i class="fas fa-search"></i></button>
+                    </form>
+                    <div style="display: inline-block; padding-right: 10px; float: right;">
+                        <button onclick="verReporte()" class="btn btn-outline-dark float-right">Ver reporte &nbsp;&nbsp;<i class="fas fa-clipboard-list"></i></button>
+                    </div>
+                    <form action="pdf"  id="frmReporte" hidden method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="idEstudiante" id="idEstudiante">
                     </form>
                     <br/><br/><br/>
                     {% if estudianteBuscar %}

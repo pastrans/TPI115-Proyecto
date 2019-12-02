@@ -25,7 +25,7 @@
 <li class="breadcrumb-item">
   <a href="index.html">Inicio</a>
 </li>
-<li class="breadcrumb-item active">Tiempo</li>
+<li class="breadcrumb-item active">Nombre de la pagina</li>
 {% endblock %}
 
 {% block contenido %}
@@ -35,14 +35,11 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-body">
-            <form method="POST" id="frmTiempo" action="agregar">
+            <form method="POST" id="frmSeccion" action="">
               {% csrf_token %}
               <div class="form-group">
-                <label for="horaI">Hora Inicial:</label>
-                <input type="time" class="form-control" id="horaI" name="horaI" placeholder="hora Inicial de la sesión" autocomplete="off">
-                <br>
-                <label for="horaF">Hora Final:</label>
-                <input type="time" class="form-control" id="horaF" name="horaF" placeholder="hora Final de la sesión" autocomplete="off">
+                <label for="nombre">Nombre:</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de la sección" autocomplete="off">
               </div>
               <button type="submit" class="btn btn-dark float-right">Guardar</button>
             </form>
@@ -55,25 +52,21 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th class="scope">#</th>
-                  <th class="scope">Hora Inicial</th>
-                  <th class="scope">Hora Final</th>
-                  <th class="scope">Accion</th>
+                  <th class="scope">Nombre</th>
+                  <th class="scope">Acciones</th>
                 </tr>
               </thead>  
               <tbody>
-                {% if tiempos %}
-                {% for t in tiempos %}
+                {% if secciones %}
+                {% for seccion in secciones %}
                 <tr>
-                  <td>{{t.idTiempo}}</td>
-                  <td>{{t.horaInicial}}</td>
-                  <td>{{t.horaFinal}}</td>
+                  <td>{{ seccion.nombre }}</td>
                   <td>
-                    {% if t.estado == 'A' %}
-                    <button disabled class="btn btn-outline-dark" id="btnEditar" onclick="editTiempo('{{ t.idTiempo }}', '{{ t.horaInicial }}', '{{t.horaFinal}}')" data-toggle="tooltip" data-placement="bottom" title="Editar sección"> <i class="fas fa-edit"></i></button>
-                    <button class="btn btn-outline-dark" onclick="elimTiempo('{{ t.idTiempo }}')" data-toggle="tooltip" data-placement="bottom" title="Eliminar sección"> <i class="far fa-trash-alt"></i></button>
-                    {% elif t.estado == 'I' %}
-                    <button class="btn btn-outline-dark" onclick="habTiempo('{{ t.idTiempo }}')" data-toggle="tooltip" data-placement="bottom" title="Habilitar sección"> <i class="fas fa-trash-restore"></i></button>
+                    {% if seccion.estado == 'A' %}
+                    <button class="btn btn-outline-dark" id="btnEditar" onclick="editarSeccion('{{ seccion.idSeccion }}', '{{ seccion.nombre }}')" data-toggle="tooltip" data-placement="bottom" title="Editar sección"> <i class="fas fa-edit"></i></button>
+                    <button class="btn btn-outline-dark" onclick="eliminarSeccion({{ seccion.idSeccion }})" data-toggle="tooltip" data-placement="bottom" title="Eliminar sección"> <i class="far fa-trash-alt"></i></button>
+                    {% elif seccion.estado == 'I' %}
+                    <button class="btn btn-outline-dark" onclick="habilitarSeccion({{ seccion.idSeccion }})" data-toggle="tooltip" data-placement="bottom" title="Habilitar sección"> <i class="fas fa-trash-restore"></i></button>
                     {% endif %}
                   </td>
                 </tr>
@@ -82,12 +75,12 @@
               </tbody>
             </table>
             <div class="float-right">
-                <form method="POST" id="frmFiltro" class="d-none">
+                <form method="POST" id="frmFiltroSeccion" class="d-none">
                   {% csrf_token %}
                   <input type="text" id="estado" name="estado">
                 </form>  
-                <a href="#" onclick="filtrarEstado('A')" class="card-link">Activos</a>
-                <a href="#" onclick="filtrarEstado('I')" class="card-link">Inactivos</a>
+                <a href="#" onclick="filtrarSeccion('A')" class="card-link">Activos</a>
+                <a href="#" onclick="filtrarSeccion('I')" class="card-link">Inactivos</a>
             </div>
           </div>
         </div>
@@ -101,5 +94,5 @@
   <script src="../../static/vendor/datatables/dataTables.bootstrap4.js"></script>
   <!-- Demo scripts for this page-->
   <script src="../../static/js/demo/datatables-demo.js"></script>
-  <script src="{% static 'js/tiempo/tiempo.js' %}"></script>
+  <script src="{% static 'js/seccion/seccion.js' %}"></script>
 {% endblock %}

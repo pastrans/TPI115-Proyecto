@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from apps.tiempo.models import Tiempo
 from datetime import datetime
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
+@login_required
 def resumenTiempo(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
@@ -14,6 +15,7 @@ def resumenTiempo(request):
     data = {'tiempos' : t}
     return render(request, 'tiempo/tiempo.html', data)
 
+@login_required
 def agregarTiempo(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
@@ -24,7 +26,8 @@ def agregarTiempo(request):
         t.save()
     return redirect('resumenTiempo')
 
-def agregarTiempo(request,idTiempo):
+@login_required
+def editarTiempo(request,idTiempo):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
     if request.method == 'POST':
@@ -34,6 +37,7 @@ def agregarTiempo(request,idTiempo):
         t.save()
     return redirect('resumenTiempo')
 
+@login_required
 def cambiarEstado(request,idTiempo,estado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')

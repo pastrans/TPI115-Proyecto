@@ -1,9 +1,14 @@
 
-function editPnal(idPnal, nombre, apellido, codigo){
+function editPnal(idPnal, nombre, apellido, codigo, idPermiso){
     $("#frmSeccion").attr('action', 'editar/' + idPnal);
     $("#nombreP").val(nombre);
     $("#apellidoP").val(apellido);
     $("#codigoP").val(codigo);
+    $("#permisoP").val(idPermiso).change();
+    $("#chkCambiar").show();
+    $("#LchkCambiar").show();
+    $("#claveP").hide();
+    $("#LclaveP").hide();
 }
 
 function elimPnal(idPnal){
@@ -40,3 +45,19 @@ function filtrarSeccion(estado){
     $("#estado").val(estado);
     $("#frmFiltroSeccion").submit();
 }
+
+
+$(document).ready(function(){
+    $("#chkCambiar").hide();
+    $("#LchkCambiar").hide();
+    $('#chkCambiar').click(function(){
+        if($(this).prop("checked") == true){
+            $("#claveP").show();
+            $("#LclaveP").show();
+        }
+        else if($(this).prop("checked") == false){
+            $("#claveP").hide();
+            $("#LclaveP").hide();
+        }
+    });
+});
