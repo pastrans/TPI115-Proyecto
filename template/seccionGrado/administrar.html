@@ -29,7 +29,7 @@
 {% endblock %}
 
 {% block contenido %}
-  <h1>Administrar Secciones</h1>
+  <h1>Administrar Grados y Secciones</h1>
 
     <div class="row">
       <div class="col-md-6">
@@ -38,10 +38,75 @@
             <form method="POST" id="frmSeccion" action="">
               {% csrf_token %}
               <div class="form-group">
-                <label for="nombre">Nombre:</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de la sección" autocomplete="off">
+
+                <!-- select para grado--->
+                <di class = "row">
+                <label class="col-md-3" for="grado">Grado:</label>
+                <select class="form-control col-md-8" name="grado" id = "grado" autocomplete="off" required>
+                  {% for grado in grados %}
+                  <!--get_nivel_display--->
+                  <option  value= "{{grado.idGrado}}">{{grado.nombre}}</option>
+                  {% endfor %}
+                </select>
+
+                </di>
+                <br>
+                <!-- fin select grado--->
+                  <!-- select para seccion--->
+                <di class="row">
+                  <label class="col-md-3" for="seccion">Seccion:</label>
+                  <select class="form-control col-md-8" name="seccion" id = "seccion" autocomplete="off" required>
+                    {% for seccion in secciones %}
+                    <option  value= "{{seccion.idSeccion}}">{{seccion.nombre}}</option>
+                    {% endfor %}
+                  </select>
+
+                </di>
+                <br>
+                <!-- fin select seccion--->
+                <!-- select para personal --->
+                <di class="row">
+                <label class="col-md-3" for="personal">Personal:</label>
+                <select class="form-control col-md-8" name="personal" id = "personal" autocomplete="off" required>
+                  {% for personal in personals %}
+                  <option  value= "{{personal.idPersonal}}">{{personal.nombre}}</option>
+                  {% endfor %}
+                </select>
+
+                </di>
+                <br>
+                <!-- fin select personal--->
+                <!-- select para especialidad --->
+                <div class="row">
+                <label class="col-md-3" for="especialidad">Especialidad:</label>
+                <select class="form-control col-md-8" name="especialidad" id = "especialidad" autocomplete="off" required>
+                  {% for especialidad in especialidades %}
+                  <option  value= "{{especialidad.idEspecialidad}}">{{especialidad.nombre}}</option>
+                  {% endfor %}
+                </select>
+
+                </div>
+                <br>
+                <!-- fin select especilidad--->
+
+                <!-- select para turno --->
+                <div class="row">
+                <label class="col-md-3" for="especialidad">Turno:</label>
+                <select class="form-control col-md-8" name="turno" id = "turno" autocomplete="off" required>
+                  <option  value= "M">Matutino</option>
+                  <option  value= "V">Vespertino</option>
+                </select>
+
+                </div>
+                <!-- fin select turno--->
               </div>
-              <button type="submit" class="btn btn-dark float-right">Guardar</button>
+              <div class="row">
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-dark float-center col-md-3"  >Guardar</button>
+                </div>
+
+              </div>
+
             </form>
           </div>
         </div>
@@ -53,6 +118,9 @@
               <thead>
                 <tr>
                   <th class="scope">Nombre</th>
+                  <th class="scope">Especialidad</th>
+                  <th class="scope">Personal</th>
+                  <th class="scope">Turno</th>
                   <th class="scope">Acciones</th>
                 </tr>
               </thead>
@@ -60,20 +128,20 @@
                 {% if seccionGrados %}
                 {% for sg in seccionGrados %}
                 <tr>
-                  <td>{{ sg.nombre }}</td>
+                  <td>{{ sg.grado.nombre}} {{ sg.seccion.nombre}}</td>
+                  <td>{{ sg.especialidad.nombre}}</td>
+                  <td>{{ sg.personal.nombre}}</td>
+                  <td>{{ sg.get_turno_display}}</td>
                   <td>
-                    {% if sg.estado == 'A' %}
                     <button class="btn btn-outline-dark" id="btnEditar" onclick="editarSeccion('{{ seccion.idSeccion }}', '{{ seccion.nombre }}')" data-toggle="tooltip" data-placement="bottom" title="Editar sección"> <i class="fas fa-edit"></i></button>
-                    <button class="btn btn-outline-dark" onclick="eliminarSeccion({{ seccion.idSeccion }})" data-toggle="tooltip" data-placement="bottom" title="Eliminar sección"> <i class="far fa-trash-alt"></i></button>
-                    {% elif seccion.estado == 'I' %}
-                    <button class="btn btn-outline-dark" onclick="habilitarSeccion({{ seccion.idSeccion }})" data-toggle="tooltip" data-placement="bottom" title="Habilitar sección"> <i class="fas fa-trash-restore"></i></button>
-                    {% endif %}
                   </td>
                 </tr>
                 {% endfor %}
                 {% endif %}
               </tbody>
             </table>
+            <!-- select para una mejora que te permita eliminar --->
+            <!--
             <div class="float-right">
                 <form method="POST" id="frmFiltroSeccion" class="d-none">
                   {% csrf_token %}
@@ -82,6 +150,7 @@
                 <a href="#" onclick="filtrarSeccion('A')" class="card-link">Activos</a>
                 <a href="#" onclick="filtrarSeccion('I')" class="card-link">Inactivos</a>
             </div>
+            --->
           </div>
         </div>
       </div>
@@ -94,5 +163,5 @@
   <script src="../../static/vendor/datatables/dataTables.bootstrap4.js"></script>
   <!-- Demo scripts for this page-->
   <script src="../../static/js/demo/datatables-demo.js"></script>
-  <script src="{% static 'js/seccion/seccion.js' %}"></script>
+  <script src="{% static 'js/seccionGrado/seccionGrado.js' %}"></script>
 {% endblock %}
