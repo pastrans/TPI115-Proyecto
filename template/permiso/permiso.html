@@ -37,12 +37,22 @@
       <div class="col-md-12">        
         <div class="card">
           <div class="card-body">
-            <form method="POST" id="frmSeccion" action="agregar">
+            <form method="POST" id="frmSeccion" 
+              {% if editando %}
+                action=""
+              {% else %}
+                action="agregar"
+              {% endif %}
+              >
               {% csrf_token %}
               <div class="row">
                 <div class="col-md-6">
                       <label for="nombrePermiso">Nombre:</label>
-                      <input type="text" class="form-control" id="nombrePermiso" name="nombrePermiso" placeholder="Nombre del permiso" autocomplete="off">
+                      <input type="text" class="form-control" id="nombrePermiso" name="nombrePermiso" placeholder="Nombre del permiso" autocomplete="off"
+                      {% if editando %}
+                         value="{{permiso.nombre}}"
+                      {% endif %}
+                        >
                       <br>
                 </div>
                 <div class='col-md-6'>
@@ -56,14 +66,15 @@
                           {% endif %}
                           <div class="form-check col-sm-6">
                             <input class="form-check-input position-static" type="checkbox" value={{modulo.idModulo}}
-                            name="modulos" id="modulo{{modulo.idModulo}}">
+                            name="modulos" id="modulo{{modulo.idModulo}}"
                             {% if editando == True %}
                               {% for modulo2 in permiso.modulo.all %}
                                 {% if modulo.idModulo == modulo2.idModulo %}
-                                checked
-                                {% endif %}                            
+                                   checked
+                                {% endif %}                          
                               {% endfor %}
                             {% endif %}
+                            >
                             <label class="form-check-label" for="modulo{{modulo.idModulo}}">
                               {{modulo.nombre}}
                             </label>
@@ -120,10 +131,10 @@
                   </td>
                   <td>
                     {% if permiso.estado == 'A' %}
-                    <button class="btn btn-outline-dark" onclick="editPermiso('{{permiso.idPermiso}}' ,'{{permiso.nombre}}', '{{permiso.modulo}}');" data-toggle="tooltip" data-placement="bottom" title="Editar permiso"> <i class="fas fa-edit"></i></button>
-                    <button class="btn btn-outline-dark" onclick="elimPermiso('{{permiso.idPermiso}}');" data-toggle="tooltip" data-placement="bottom" title="Eliminar permiso"> <i class="far fa-trash-alt"></i></button>
-                    {% elif p.estado == 'I' %}
-                    <button class="btn btn-outline-dark" onclick="habPnal('{{p.idPersonal}}');" data-toggle="tooltip" data-placement="bottom" title="Habilitar personal"> <i class="fas fa-trash-restore"></i></button>
+                      <button class="btn btn-outline-dark" onclick="editPermiso('{{permiso.idPermiso}}')" data-toggle="tooltip" data-placement="bottom" title="Editar permiso"> <i class="fas fa-edit"></i></button>
+                      <button class="btn btn-outline-dark" onclick="elimPermiso('{{permiso.idPermiso}}');" data-toggle="tooltip" data-placement="bottom" title="Eliminar permiso"> <i class="far fa-trash-alt"></i></button>
+                    {% elif permiso.estado == 'I' %}
+                      <button class="btn btn-outline-dark" onclick="habPermiso('{{permiso.idPermiso}}');" data-toggle="tooltip" data-placement="bottom" title="Habilitar permiso"> <i class="fas fa-trash-restore"></i></button>
                     {% endif %}
                   </td>                    
                 </tr>
