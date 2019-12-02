@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Reporte de conducta - {{ estudiante.nombre }} {{ estudiante.apellido }} - {{ today | date:"d/m/Y" }}
+    </title>
+    <style type="text/css">
+        @page {
+            size: Letter;
+            margin: 2cm;
+        }
+        *{
+            font-size: 11pt;
+        }
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 5px;
+            background-color: #fff;
+        }
+        .table th,
+        .table td {
+            padding: 5px;
+            vertical-align: top;
+            border: 1px solid #000;
+            font-size: 8.8pt;
+        }
+        .table thead th {
+            text-align: center;
+            vertical-align: bottom;
+            border-bottom: 2px solid #000;
+        }
+        .table tbody + tbody {
+            border-top: 2px solid #000;
+        }
+        .table .table {
+            background-color: #fff;
+        }
+        .list-group {
+            display: block;
+            width: 100%;
+            list-style: none;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .list-group p {
+            width: 100%;
+            height: 20px;
+            line-height: 10px;
+            list-style: none;
+            font-size: 11pt;
+        }
+        .headerH{
+            font-size: 12pt;
+            text-align: center;
+        }
+        .header{
+            line-height: 10px;
+            font-size: 14pt;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <p class="header">Instituto Cultural Oxford</p>
+        <p class="header">Reporte de conducta</p>
+        <div class="list-group">
+            <p><b>Alumno:</b> {{ estudiante.nombre }} {{ estudiante.apellido }} </p>
+            <p><b>Grado:</b> {{ estudiante.seccionGrado.grado.nombre }} {{ estudiante.seccionGrado.seccion.nombre }}</p>
+        </div>
+        <br/>
+        {% if llegadasTarde %}
+        <p class="header headerH">Llegadas tarde a la institución</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 3cm;">Fecha</th>
+                <th>Descripcion</th>
+                <th style="width: 5cm;">Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for llegadaTarde in llegadasTarde %}
+                <tr>
+                    <td style="text-align: center;">{{ llegadaTarde.fechaHora | date:"d/m/Y" }}</td>
+                    <td>Llegada tarde a la institución</td>
+                    <td style="text-align: center;">{{ llegadaTarde.get_estado_display }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="header headerH">Sin llegadas tarde a la institución</p>
+        {% endif %}
+        {% if inasistencias %}
+        <p class="header headerH">Inasistencias a la institución</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 4cm;">Fecha</th>
+                <th>Descripcion</th>
+                <th style="width: 5cm;">Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for inasistencia in inasistencias %}
+                <tr>
+                    <td style="text-align: center;">{{ inasistencia.fecha | date:"d/m/Y" }}</td>
+                    <td style="text-align: center;">Inasistencia a la institución</td>
+                    <td style="text-align: center;">{{ inasistencia.get_estado_display }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="header headerH">Sin inasistencias a la institución</p>
+        {% endif %}
+        {% if amonestaciones %}
+        <p class="header headerH">Amonestaciones</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 3cm;">Fecha</th>
+                <th style="width: 9cm;">Descripcion</th>
+                <th style="width: 5cm;">Personal</th>
+                <th style="width: 2.5cm;">Tipo</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for amonestacion in amonestaciones %}
+                <tr>
+                    <td style="text-align: center;">{{ amonestacion.fecha | date:"d/m/Y" }}</td>
+                    <td>{{ amonestacion.falta.descripcion }}</td>
+                    <td>{{ amonestacion.personal.nombre }} {{ amonestacion.personal.apellido }}</td>
+                    <td style="text-align: center;">{{ amonestacion.falta.tipoFalta.nombre }}</td>
+                </tr>
+                {% if amonestacion.sancion %}
+                <tr>
+                    <td>&nbsp;</td>
+                    <td colspan="3">Sanción: {{amonestacion.sancion.descripcion}}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="header headerH">Sin amonestaciones</p>
+        {% endif %}
+        {% if observaciones %}
+        <p class="header headerH">Observaciones</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 3cm;">Fecha</th>
+                <th style="width: 11cm;">Observacion</th>
+                <th style="width: 4cm;">Personal</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for observacion in observaciones %}
+                <tr>
+                    <td style="text-align: center;">{{ observacion.fecha | date:"d/m/Y" }}</td>
+                    <td>{{ observacion.observacion }}</td>
+                    <td>{{ observacion.personal.nombre }} {{ observacion.personal.apellido }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="header headerH">Sin observaciones</p>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>
