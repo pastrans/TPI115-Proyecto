@@ -3,7 +3,7 @@ from apps.tiempo.models import Tiempo
 from datetime import datetime
 
 # Create your views here.
-
+@login_required
 def resumenTiempo(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
@@ -14,6 +14,7 @@ def resumenTiempo(request):
     data = {'tiempos' : t}
     return render(request, 'tiempo/tiempo.html', data)
 
+@login_required
 def agregarTiempo(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
@@ -24,6 +25,7 @@ def agregarTiempo(request):
         t.save()
     return redirect('resumenTiempo')
 
+@login_required
 def editarTiempo(request,idTiempo):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
@@ -34,6 +36,7 @@ def editarTiempo(request,idTiempo):
         t.save()
     return redirect('resumenTiempo')
 
+@login_required
 def cambiarEstado(request,idTiempo,estado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')

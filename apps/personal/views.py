@@ -4,7 +4,7 @@ from apps.usuario.models import Usuario
 from apps.permiso.models import Permiso
 
 # Create your views here.
-
+@login_required
 def resumenPersonal(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
@@ -24,6 +24,7 @@ def resumenPersonal(request):
     data = {'personal' : p, 'permisos' : per, 'cross' : cross}
     return render(request, 'personal/personal.html', data)
 
+@login_required
 def agregarPersonal(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
@@ -42,6 +43,7 @@ def agregarPersonal(request):
         return redirect('resumenPersonal')
     return redirect('resumenPersonal')
 
+@login_required
 def editarPersonal(request, idPnal):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
@@ -65,6 +67,7 @@ def editarPersonal(request, idPnal):
         return redirect('resumenPersonal')
     return redirect('resumenPersonal')
 
+@login_required
 def cambiarEstado(request,idPnal,estado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
