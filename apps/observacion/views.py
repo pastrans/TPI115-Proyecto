@@ -10,11 +10,12 @@ from apps.personal.models import Personal
 
 @login_required
 def resumenObservacion(request):
-    #Validación
+    #Validación de permisos
     if not request.session['tipo'] == 'P':
         return redirect('/my')
     if not "Observación" in request.session['modulos']:
         return redirect('/index')
+    #Método
     estudiantes = Estudiante.objects.all()
     personal = Personal.objects.get(idPersonal=request.session['id'])
     data = {'estudiantes' : estudiantes, 'personal' : personal}
@@ -22,10 +23,12 @@ def resumenObservacion(request):
 
 @login_required
 def agregarObservacion(request):
+    #Validación de permisos
     if not request.session['tipo'] == 'P':
         return redirect('/my')
     if not "Observación" in request.session['modulos']:
         return redirect('/index')
+    #Método
     if request.method == 'POST':
         personal_id = request.session['id']
         estudiante_id = request.POST['estudiante_id']
@@ -36,17 +39,30 @@ def agregarObservacion(request):
     return redirect(resumenObservacion)
 
 @login_required
-def amonestacionBuscar(request):
+def buscarObservacion(request):
+    #Validación de permisos
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    data = {}
-    amonestaciones = {}
+    if not "Observación" in request.session['modulos']:
+        return redirect('/index')
+    #Método
     estudiante = {}
-    estudiantes = Estudiante.objects.filter(estado='A').order_by('apellido')
-    faltas = Falta.objects.filter(estado='A')
-    tiposFalta = TipoFalta.objects.filter(estado='A')
+    observaciones = {}
+    estudiantes = Estudiante.objects.filter(estado='A').order_by('apellido')    
     if request.method == 'POST':
         estudiante = Estudiante.objects.get(idEstudiante=request.POST['estudiante_id'])
-        amonestaciones = Amonestacion.objects.filter(estudiante=estudiante)
-    data = {'estudiantes' : estudiantes, 'amonestaciones' : amonestaciones, 'estudianteBuscar' : estudiante}
-    return render(request, 'amonestacion/buscar.html', data)
+        observaciones = Observacion.objects.filter(estudiante=estudiante)
+    data = {'estudiantes' : estudiantes, 'estudianteBuscar' : estudiante, 'observaciones' : observaciones}
+    return render(request, 'observacion/buscar.html', data)
+
+@login_required
+def eliminarObservacion(request, idObservacion):
+    #Validación de permisos
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
+    if not "Observación" in request.session['modulos']:
+        return redirect('/index')
+    #Método
+    observacion = Observacion.objects.get(idObservacion=idObservacion)
+    observacion.delete()
+    return redirect('buscarObservacion')

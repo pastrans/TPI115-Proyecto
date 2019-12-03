@@ -24,75 +24,78 @@
 
 {% block listaRuta %}
 <li class="breadcrumb-item">
-  <a href="index.html">Inicio</a>
+  <a href="/index">Inicio</a>
 </li>
-<li class="breadcrumb-item active">Observaciones</li>
+<li class="breadcrumb-item">
+    <a href="/observacion">Observaciones</a>
+</li>
+<li class="breadcrumb-item active">Buscar observaciones</li>
 {% endblock %}
 
 {% block contenido %}
-    <h1>Buscar Observaciones</h1>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">Buscar observaciones</div>
-                <div class="card-body">
-                    <form method="POST">
-                        {% csrf_token %}
-                        <label for="estudiante">Seleccione un estudiante</label>
-                        <select class="selectpicker col-sm-12" data-live-search="true" id="estudiante" name="estudiante_id">
-                            <option value="0" disabled selected>Seleccione un estudiante</option>
-                            {% if estudiantes %}
-                            {% for estudiante in estudiantes %}
-                            {% if estudianteBuscar and estudianteBuscar.idEstudiante == estudiante.idEstudiante %}
-                            <option value="{{ estudiante.idEstudiante }}" selected >{{ estudiante.codigo }} - {{ estudiante.nombre }} {{ estudiante.apellido }}</option>
-                            {% else %}
-                            <option value="{{ estudiante.idEstudiante }}">{{ estudiante.codigo }} - {{ estudiante.nombre }} {{ estudiante.apellido }}</option>
-                            {% endif %}
-                            {% endfor %}
-                            {% endif %}
-                        </select>
-                        <br/><br/>
-                          <button type="submit" class="btn btn-outline-dark float-right">Buscar &nbsp;&nbsp;<i class="fas fa-search"></i></button>
-                    </form>
-                    <div style="display: inline-block; padding-right: 10px; float: right;">
-                        <button onclick="verReporte()" class="btn btn-outline-dark float-right">Ver reporte &nbsp;&nbsp;<i class="fas fa-clipboard-list"></i></button>
-                    </div>
-                    <form action="pdf"  id="frmReporte" hidden method="POST">
-                        {% csrf_token %}
-                        <input type="text" name="idEstudiante" id="idEstudiante">
-                    </form>
-                    <br/><br/><br/>
-                    {% if estudianteBuscar %}
-                        <p><b>Nombre: </b>{{ estudianteBuscar.nombre }} {{ estudianteBuscar.apellido }} ({{ estudianteBuscar.codigo }})</p>
-                    {% endif %}
-                    <table class="table">
-                        <tr>
-                            <th>#</th>
-                            <th>Descripción</th>
-                            <th>Gravedad</th>
-                            <th>Fecha</th>
-                            <th>Personal</th>
-                            <th>Acción</th>
-                        </tr>
-                        {% if amonestaciones %}
-                        {% for amonestacion in amonestaciones %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ amonestacion.falta.descripcion }}</td>
-                            <td>{{ amonestacion.falta.tipoFalta.nombre }}</td>
-                            <td>{{ amonestacion.fecha }}</td>
-                            <td>{{ amonestacion.personal.nombre }} {{ amonestacion.personal.apellido }}</td>
-                            <td><a onclick="eliminar({{ amonestacion.idAmonestacion }})" href="#" class="btn btn-outline-dark">Eliminar </a></td>
-                        </tr>
-                        {% endfor %}
-                        {% endif %}
-                    </table>
-                </div>
+  <h1>Buscar Observaciones</h1>
+  <div class="row">    
+    <!-- Seleccionar estudiante -->
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <form method="POST" action="">
+            {% csrf_token %}
+            <div class="form-group row">
+              <label for="estudiante" class="col-md-2 col-form-label">Estudiante:</label>
+              <select class="selectpicker col-md-10" data-live-search="true" id="estudiante" name="estudiante_id">
+                <option value="0" disabled selected>Seleccione un estudiante</option>
+                {% if estudiantes %}
+                {% for estudiante in estudiantes %}
+                {% if estudianteBuscar and estudianteBuscar.idEstudiante == estudiante.idEstudiante %}
+                <option value="{{ estudiante.idEstudiante }}" selected >{{ estudiante.codigo }} - {{ estudiante.nombre }} {{ estudiante.apellido }}</option>
+                {% else %}
+                <option value="{{ estudiante.idEstudiante }}">{{ estudiante.codigo }} - {{ estudiante.nombre }} {{ estudiante.apellido }}</option>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+              </select>
             </div>
+            <button type="submit" class="btn btn-dark float-right">Buscar <i class="fas fa-search"></i></button>
+          </form>
         </div>
+      </div>
+    </div> <!-- Fin seleccionar estudiante -->
+
+    <!-- Resultado búsqueda -->
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <table class="table">
+            <!-- Encabezado -->
+            <thead>
+              <tr>
+                <th class="scope" style='width: 33%;'>Fecha</th>
+                <th class="scope" style='width: 33%;'>Personal</th>
+                <th class="scope" style='width: 33%;'>Observación</th>                
+                <th></th>
+              </tr>
+            </thead>
+            <!-- Cuerpo -->
+            <tbody>
+              {% for observacion in observaciones %}
+              <tr>
+                <td>{{observacion.fecha}}</td>
+                <td>{{observacion.personal.nombre}} {{observacion.personal.apellido}}</td>
+                <td>{{observacion.observacion}}</td>
+                <td>
+                  <button class="btn btn-outline-dark" onclick="eliminarObservacion('{{observacion.idObservacion}}');" data-toggle="tooltip" data-placement="bottom" title="Eliminar Observación"> <i class="far fa-trash-alt"></i></button>
+                </td>
+                {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <br/>
-{% endblock %}
+  </div>
+  <br/>
+{% endblock contenido %}
 
 {% block agregarScript %}
   <!-- Page level plugin JavaScript-->
@@ -101,5 +104,5 @@
   <!-- Demo scripts for this page-->
   <script src="../../static/js/demo/datatables-demo.js"></script>
   <script src="../../static/js/bootstrap-select.min.js"></script>
-  <script src="../../static/js/amonestacion/amonestacion.js"></script>
-{% endblock %}
+  <script src="../../static/js/observacion/observacion.js"></script>
+{% endblock agregarScript %}

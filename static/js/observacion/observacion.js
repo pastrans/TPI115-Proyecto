@@ -1,38 +1,14 @@
-function editPermiso(idPermiso){
-    location.href = '/permiso/editarPermiso/' + idPermiso
-}
-
-function elimPermiso(idPermiso){
+function eliminarObservacion(idObservacion){
     Swal.fire({
-        title: '¿Seguro que desea desactivar el permiso?',
-        text: "Los datos relacionados con el permiso ya no serán visibles.",
+        title: '¿Seguro que desea eliminar la observación?',
+        text: "Los datos relacionados con la observación serán eliminados.",
         type: 'info',
         showCancelButton: true,
-        confirmButtonText: 'Sí, desactivar',
+        confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar'
         }).then((result) => {
         if (result.value) {
-            location.href = '/permiso/cambiarEstado/' + idPermiso + '/I'
+            location.href = '/observacion/eliminarObservacion/' + idObservacion
         }
     });
-}
-
-function habPermiso(idPermiso){
-    Swal.fire({
-        title: '¿Seguro que desea activar el permiso?',
-        text: "Los datos relacionados con el permiso ahora serán visibles.",
-        type: 'info',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, activar',
-        cancelButtonText: 'Cancelar'
-        }).then((result) => {
-        if (result.value) {
-            location.href = '/permiso/cambiarEstado/' + idPermiso + '/A'
-        }
-    });
-}
-
-function filtrarSeccion(estado){
-    $("#estado").val(estado);
-    $("#frmFiltroSeccion").submit();
 }
