@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from apps.falta.models import Falta
 from apps.tipoFalta.models import TipoFalta
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 # Create your views here.
 @login_required
@@ -10,8 +11,11 @@ def resumenFalta(request):
         return redirect('/my')
     if not "Falta" in request.session['modulos']:
         return redirect('/index')
-    faltas = Falta.objects.filter(estado='A')
+    page = request.GET.get('page', 1)
+    faltas_list = Falta.objects.filter(estado='A')
     tipos = TipoFalta.objects.filter(estado='A')
+    paginator = Paginator(faltas_list, 5)
+    faltas = paginator.page(page)
     if request.method == 'POST':
     	 faltas = Falta.objects.filter(estado=request.POST['estado'])
     data = {'faltas' : faltas, 'tipos': tipos,}

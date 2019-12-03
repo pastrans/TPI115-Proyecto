@@ -158,10 +158,22 @@
       {% endif %}
 
       {% if "Inasistencia" in request.session.modulos %}
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Asistencia</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="/inasistencia">Asistencia a clase</a>
+            <a class="dropdown-item" href="/inasistencia/justificar">Justificar inasistencia</a>
+          </div>
+        </li>
+      {% endif %}
+      {% if "Impuntualidad" in request.session.modulos %}
       <li class="nav-item">
-        <a class="nav-link" href="/inasistencia">
+        <a class="nav-link" href="/impuntualidad">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>Inasistencia</span></a>
+          <span>Impuntualidad</span></a>
       </li>
       {% endif %}
     </ul>

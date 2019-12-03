@@ -87,6 +87,27 @@
                 {% endif %}
               </tbody>
             </table>
+            {% if faltas.has_other_pages %}
+            <ul class="pagination">
+              {% if faltas.has_previous %}
+                <li class="page-item"><a href="?page={{ faltas.previous_page_number }}">&laquo;</a></li>
+              {% else %}
+                <li class="disabled "><span>&laquo;</span></li>
+              {% endif %}
+              {% for i in faltas.paginator.page_range %}
+                {% if faltas.number == i %}
+                  <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                  <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+              {% endfor %}
+              {% if faltas.has_next %}
+                <li><a href="?page={{ faltas.next_page_number }}">&raquo;</a></li>
+              {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+              {% endif %}
+            </ul>
+            {% endif %}
             <div class="float-right">
                 <form method="POST" id="frmFiltroFaltas" class="d-none">
                   {% csrf_token %}
