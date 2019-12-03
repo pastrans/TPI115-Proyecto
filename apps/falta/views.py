@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 def resumenFalta(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Falta" in request.session['modulos']:
+        return redirect('/index')
     faltas = Falta.objects.filter(estado='A')
     tipos = TipoFalta.objects.filter(estado='A')
     if request.method == 'POST':
@@ -19,6 +21,8 @@ def resumenFalta(request):
 def agregarFalta(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Falta" in request.session['modulos']:
+        return redirect('/index')
     if request.method == 'POST':
         descripcion = request.POST['descripcion']
         nomTipo = request.POST['tipo']
@@ -32,6 +36,8 @@ def agregarFalta(request):
 def editarFalta(request, idFalta):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Falta" in request.session['modulos']:
+        return redirect('/index')
     if request.method == 'POST':
         falta = Falta.objects.get(idFalta = idFalta)
         falta.descripcion = request.POST['descripcion']
@@ -46,6 +52,8 @@ def editarFalta(request, idFalta):
 def estadoFalta(request, idFalta, estado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Falta" in request.session['modulos']:
+        return redirect('/index')
     falta = Falta.objects.get(idFalta = idFalta)
     falta.estado = estado
     falta.save()

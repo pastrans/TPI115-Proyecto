@@ -17,7 +17,7 @@ from apps.observacion.models import Observacion
 @login_required
 def index(request):
     if not request.session['tipo'] == 'E':
-        return redirect('index')
+        return redirect('/index')
     return render(request, 'public/index.html')
 
 class Pdf(View):
@@ -28,7 +28,7 @@ class Pdf(View):
         today = timezone.now()
         estudiante = Estudiante.objects.get(idEstudiante=request.session['id'])
         amonestaciones = Amonestacion.objects.filter(estudiante=estudiante).order_by('fecha')
-        llegadasTarde = Impuntualidad.objects.filter(estudiante=estudiante).order_by('fechaHora')
+        llegadasTarde = Impuntualidad.objects.filter(estudiante=estudiante).order_by('fecha')
         inasistencias = Inasistencia.objects.filter(estudiante=estudiante).order_by('fecha')
         observaciones = Observacion.objects.filter(estudiante=estudiante).order_by('fecha')
         params = {

@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 def resumenGrado(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Grado" in request.session['modulos']:
+        return redirect('/index')
     grados = Grado.objects.filter(estado='A')
     if request.method == 'POST':
         grados = Grado.objects.filter(estado=request.POST['estado'])
@@ -21,6 +23,8 @@ def resumenGrado(request):
 def agregarGrado(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Grado" in request.session['modulos']:
+        return redirect('/index')
     if request.method == 'POST':
         nombre = request.POST['nombre']
         nivel = request.POST['nivel']
@@ -34,6 +38,8 @@ def agregarGrado(request):
 def editarGrado(request, idGrado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Grado" in request.session['modulos']:
+        return redirect('/index')
     if request.method == 'POST':
         grado = Grado.objects.get(idGrado = idGrado)
         grado.nombre = request.POST['nombre']
@@ -47,6 +53,8 @@ def editarGrado(request, idGrado):
 def estadoGrado(request, idGrado, estado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Grado" in request.session['modulos']:
+        return redirect('/index')
     grado = Grado.objects.get(idGrado = idGrado)
     grado.estado = estado
     grado.save()

@@ -1,0 +1,109 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}
+  Asignar impuntualidad
+{% endblock %}
+
+<!-- incio Bloques para las meta-->
+{% block descripcion %}
+  Asistencias del Instituto Cultural de Oxford El Salvador
+{% endblock %}
+
+{% block palabrasClave %}
+  "Oxford el Salvador, Colegio Oxford, Colegios de San Salvador , San Salvador, Asistencias Oxford"
+{% endblock %}
+
+{% block agregarMetas %}
+  <meta name="robots" content="follow">
+  <meta name="robots" content="index">
+  <meta name="googlebot" content="index">
+  <meta name="google-site-verification" content="ZhnGANpVN1--eBXiXa_0W4_q1pk-_HmJtN5VnrqYaW4" />
+  <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css">
+{% endblock %}
+<!-- fin Bloques para las meta-->
+
+{% block listaRuta %}
+<li class="breadcrumb-item">
+  <a href="index.html">Inicio</a>
+</li>
+<li class="breadcrumb-item active">Nombre de la pagina</li>
+{% endblock %}
+
+{% block contenido %}
+  <h1>Administrar impuntualidades</h1>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <form method="POST" id="frmImpuntualidad" action="">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-9">
+                        <label for="estudiante">Seleccione un estudiante</label>
+                        <select class="selectpicker col-sm-12" data-live-search="true" id="estudiante" name="estudiante_id">
+                            <option value="0" disabled selected>Seleccione un estudiante</option>
+                            {% if estudiantes %}
+                            {% for estudiante in estudiantes %}
+                            <option value="{{ estudiante.idEstudiante }}">{{ estudiante.codigo }} - {{ estudiante.nombre }} {{ estudiante.apellido }}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="fecha">Fecha</label>
+                        <br>
+                        <input type="checkbox" class="form-check-input" id="hoy" data-toggle="tooltip" data-placement="bottom" title="Utilizar fecha de hoy" checked name="hoy">
+                        <input class="form-control" type="date" name="fecha" id="fecha" value='{{ hoy|date:"Y-m-d" }}' disabled>
+                    </div>
+                </div>
+                <br/>
+                <button class="btn btn-dark float-right" type="submit">Buscar</button>
+            </form>
+          </div>
+        </div>
+        <br/>
+      </div>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="scope">Estudiante</th>
+                    <th class="scope">Fecha/Hora</th>
+                    <th class="scope">Estado</th>
+                    <th class="scope">Acciones</th>
+                </tr>
+              </thead>  
+              <tbody>
+                {% if impuntualidades %}
+                {% for impuntualidad in impuntualidades %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ impuntualidad.estudiante.nombre }} {{ impuntualidad.estudiante.apellido }}</td>
+                    <td>{{ impuntualidad.fecha | date:"m/d/Y" }} {{ impuntualidad.hora |date:"H:i" }}</td>
+                    <td>{{ impuntualidad.get_estado_display }}</td>
+                    <td>
+                        <a href="eliminar/{{ impuntualidad.idImpuntualidad }}" class="btn btn-outline-dark">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block agregarScript %}
+  <!-- Page level plugin JavaScript-->
+  <script src="../../static/vendor/datatables/jquery.dataTables.js"></script>
+  <script src="../../static/vendor/datatables/dataTables.bootstrap4.js"></script>
+  <!-- Demo scripts for this page-->
+  <script src="../../static/js/demo/datatables-demo.js"></script>
+  <script src="../../static/js/bootstrap-select.min.js"></script>
+  <script src="../../static/js/impuntualidad/impuntualidad.js"></script>
+{% endblock %}

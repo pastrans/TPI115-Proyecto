@@ -26,6 +26,8 @@ from django.utils import timezone
 def amonestacionIndex(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Amonestacion" in request.session['modulos']:
+        return redirect('/index')
     data = {}
     errores = set()
     estudiantes = Estudiante.objects.filter(estado='A').order_by('apellido')
@@ -50,6 +52,8 @@ def amonestacionIndex(request):
 def amonestacionBuscar(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Amonestacion" in request.session['modulos']:
+        return redirect('/index')
     data = {}
     amonestaciones = {}
     estudiante = {}
@@ -65,6 +69,8 @@ def amonestacionBuscar(request):
 def amonestacionEliminar(request, idAmonestacion):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Amonestacion" in request.session['modulos']:
+        return redirect('/index')
     a = Amonestacion.objects.get(idAmonestacion=idAmonestacion)
     a.delete()
     return redirect('amonestacionBuscar')
@@ -75,7 +81,7 @@ def Pdf(request):
         today = timezone.now()
         estudiante = Estudiante.objects.get(idEstudiante=request.POST['idEstudiante'])
         amonestaciones = Amonestacion.objects.filter(estudiante=estudiante).order_by('fecha')
-        llegadasTarde = Impuntualidad.objects.filter(estudiante=estudiante).order_by('fechaHora')
+        llegadasTarde = Impuntualidad.objects.filter(estudiante=estudiante).order_by('fecha')
         inasistencias = Inasistencia.objects.filter(estudiante=estudiante).order_by('fecha')
         observaciones = Observacion.objects.filter(estudiante=estudiante).order_by('fecha')
         params = {

@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 def resumenTipoFalta(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Tipo Falta" in request.session['modulos']:
+        return redirect('/index')
     tipos = TipoFalta.objects.filter(estado='A')
     if request.method == 'POST':
     	tipos = TipoFalta.objects.filter(estado=request.POST['estado'])
@@ -18,6 +20,8 @@ def resumenTipoFalta(request):
 def agregarTipoFalta(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Tipo Falta" in request.session['modulos']:
+        return redirect('/index')
     if request.method == 'POST':
         nombre = request.POST['nombre']
         tipoFalta = TipoFalta(nombre = nombre)
@@ -29,6 +33,8 @@ def agregarTipoFalta(request):
 def editarTipoFalta(request, idTipo):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Tipo Falta" in request.session['modulos']:
+        return redirect('/index')
     if request.method == 'POST':
         tipoFalta = TipoFalta.objects.get(idTipoFalta = idTipo)
         tipoFalta.nombre = request.POST['nombre']
@@ -40,6 +46,8 @@ def editarTipoFalta(request, idTipo):
 def estadoTipoFalta(request, idTipo, estado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Tipo Falta" in request.session['modulos']:
+        return redirect('/index')
     tipoFalta =TipoFalta.objects.get(idTipoFalta = idTipo)
     tipoFalta.estado = estado
     tipoFalta.save()

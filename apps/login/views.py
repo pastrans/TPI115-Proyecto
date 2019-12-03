@@ -20,17 +20,18 @@ def login(request):
             user  = Usuario.objects.get(codigo=codigo)
             if user.personal_id is not None:
                 personal = Personal.objects.get(codigo=codigo)
+                request.session['id'] = personal.idPersonal
                 request.session['nombre'] = personal.nombre + personal.apellido
                 request.session['tipo'] = 'P'
             elif user.estudiante_id is not None:
                 estudiante = Estudiante.objects.get(codigo=codigo)
+                request.session['id'] = estudiante.idEstudiante
                 request.session['nombre'] = estudiante.nombre + estudiante.apellido
                 request.session['tipo'] = 'E'
             if user.permiso_id is not None:
                 permiso = Permiso.objects.get(idPermiso=user.permiso_id)
                 for modulo in permiso.modulo.all():
                     modulos.add(modulo.nombre)
-            request.session['id'] = user.id
             request.session['codigo'] = user.codigo
             request.session['permiso'] = user.permiso_id
             request.session['modulos'] = list(modulos)
