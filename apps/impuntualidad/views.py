@@ -9,6 +9,10 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required
 def impuntualidadIndex(request):
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
+    if not "Impuntualidad" in request.session['modulos']:
+        return redirect('/index')
     data = {}
     impuntualidades = Impuntualidad.objects.filter(fecha=timezone.now())
     if request.method == 'POST':
@@ -26,6 +30,10 @@ def impuntualidadIndex(request):
 
 @login_required
 def buscar(request):
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
+    if not "Impuntualidad" in request.session['modulos']:
+        return redirect('/index')
     data = {}
     impuntualidades = {}
     if request.method == 'POST':
@@ -40,6 +48,10 @@ def buscar(request):
 
 @login_required
 def eliminar(request, idImpuntualidad):
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
+    if not "Impuntualidad" in request.session['modulos']:
+        return redirect('/index')
     i = Impuntualidad.objects.get(idImpuntualidad=idImpuntualidad)
     i.delete()
     return redirect('indexImpuntualidad')

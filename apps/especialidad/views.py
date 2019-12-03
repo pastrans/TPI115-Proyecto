@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 def resumenEspecialidad(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Especialidad" in request.session['modulos']:
+        return redirect('/index')
     especialidad = Especialidad.objects.filter(estado='A')
     if request.method == 'POST':
         e = Especialidad()
@@ -21,6 +23,8 @@ def resumenEspecialidad(request):
 def editarEspecialidad(request, idEspecialidad):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Especialidad" in request.session['modulos']:
+        return redirect('/index')
     if request.method == 'POST':
         especialidad = Especialidad.objects.get(idEspecialidad = idEspecialidad)
         especialidad.nombre = request.POST['nombre']
@@ -32,6 +36,8 @@ def editarEspecialidad(request, idEspecialidad):
 def estadoEspecialidad(request, idEspecialidad, estado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Especialidad" in request.session['modulos']:
+        return redirect('/index')
     especialidad = Especialidad.objects.get(idEspecialidad = idEspecialidad)
     especialidad.estado = estado
     especialidad.save()

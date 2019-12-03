@@ -17,7 +17,7 @@ from apps.observacion.models import Observacion
 @login_required
 def index(request):
     if not request.session['tipo'] == 'E':
-        return redirect('index')
+        return redirect('/index')
     return render(request, 'public/index.html')
 
 class Pdf(View):

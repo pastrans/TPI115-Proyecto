@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 def resumenSancion(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Sancion" in request.session['modulos']:
+        return redirect('/index')
     sanciones = Sancion.objects.filter(estado='A')
     if request.method == 'POST':
         sanciones = Sancion.objects.filter(estado=request.POST['estado'])
@@ -18,6 +20,8 @@ def resumenSancion(request):
 def agregarSancion(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Sancion" in request.session['modulos']:
+        return redirect('/index')
     if request.method == 'POST':
         descripcion = request.POST['descripcion']
         sancion = Sancion(descripcion = descripcion)
@@ -29,6 +33,8 @@ def agregarSancion(request):
 def editarSancion(request, idSancion):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Sancion" in request.session['modulos']:
+        return redirect('/index')
     if request.method == 'POST':
         sancion = Sancion.objects.get(idSancion = idSancion)
         sancion.descripcion = request.POST['descripcion']
@@ -40,6 +46,8 @@ def editarSancion(request, idSancion):
 def estadoSancion(request, idSancion, estado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Sancion" in request.session['modulos']:
+        return redirect('/index')
     sancion = Sancion.objects.get(idSancion = idSancion)
     sancion.estado = estado
     sancion.save()

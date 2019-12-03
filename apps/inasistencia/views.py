@@ -15,6 +15,8 @@ os.environ['TZ'] = 'America/El_Salvador'
 def administrarAsistencia(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Inasistencia" in request.session['modulos']:
+        return redirect('/index')
     gradosListados = AsistenciaGrado.objects.filter(fecha=datetime.date.today()).values('seccionGrado_id')
     gl = set()
     for gradoListado in gradosListados:
@@ -27,6 +29,8 @@ def administrarAsistencia(request):
 def asistenciaDiferida(request, idSeccionGrado, fecha):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Inasistencia" in request.session['modulos']:
+        return redirect('/index')
     seccionGrado = SeccionGrado.objects.get(idSeccionGrado=idSeccionGrado)
     estudiantes = Estudiante.objects.filter(seccionGrado_id=idSeccionGrado, estado='A').order_by('apellido')
     d = fecha[0:2]
@@ -65,6 +69,8 @@ def asistenciaDiferida(request, idSeccionGrado, fecha):
 def pasarAsistencia(request, idSeccionGrado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Inasistencia" in request.session['modulos']:
+        return redirect('/index')
     seccionGrado = SeccionGrado.objects.get(idSeccionGrado=idSeccionGrado)
     estudiantes = Estudiante.objects.filter(seccionGrado_id=idSeccionGrado, estado='A').order_by('apellido')
     inasistencias = set()
@@ -99,6 +105,8 @@ def pasarAsistencia(request, idSeccionGrado):
 def justificarView(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Inasistencia" in request.session['modulos']:
+        return redirect('/index')
     estudiantes = Estudiante.objects.filter(estado='A').order_by('apellido')
     inasistencias = {}
     estudianteBuscar = {}
@@ -111,6 +119,8 @@ def justificarView(request):
 def justificar(request, idInasistencia):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Inasistencia" in request.session['modulos']:
+        return redirect('/index')
     i = Inasistencia.objects.get(idInasistencia=idInasistencia)
     i.estado = 'J'
     i.save()

@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 def resumenAsignatura(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Asignatura" in request.session['modulos']:
+        return redirect('/index')
     asignaturas = Asignatura.objects.filter(estado='A')
     if request.method == 'POST':
         asignaturas = Asignatura.objects.filter(estado=request.POST['estado'])
@@ -18,6 +20,8 @@ def resumenAsignatura(request):
 def agregarAsignatura(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Asignatura" in request.session['modulos']:
+        return redirect('/index')
     if request.method == 'POST':
         nombre = request.POST['nombre']
         asignatura = Asignatura(nombre = nombre)
@@ -29,6 +33,8 @@ def agregarAsignatura(request):
 def editarAsignatura(request, idAsignatura):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Asignatura" in request.session['modulos']:
+        return redirect('/index')
     if request.method == 'POST':
         asignatura = Asignatura.objects.get(idAsignatura = idAsignatura)
         asignatura.nombre = request.POST['nombre']
@@ -40,6 +46,8 @@ def editarAsignatura(request, idAsignatura):
 def estadoAsignatura(request, idAsignatura, estado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Asignatura" in request.session['modulos']:
+        return redirect('/index')
     asignatura = Asignatura.objects.get(idAsignatura = idAsignatura)
     asignatura.estado = estado
     asignatura.save()
