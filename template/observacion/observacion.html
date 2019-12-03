@@ -1,0 +1,99 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}
+  Administrar observaciones
+{% endblock %}
+
+<!-- incio Bloques para las meta-->
+{% block descripcion %}
+  Observaciones a estudiantes, Instituto Cultural de Oxford, El Salvador
+{% endblock %}
+
+{% block palabrasClave %}
+  "Oxford el Salvador, Colegio Oxford, Colegios de San Salvador , San Salvador, Asistencias Oxford"
+{% endblock %}
+
+{% block agregarMetas %}
+  <meta name="robots" content="follow">
+  <meta name="robots" content="index">
+  <meta name="googlebot" content="index">
+  <meta name="google-site-verification" content="ZhnGANpVN1--eBXiXa_0W4_q1pk-_HmJtN5VnrqYaW4" />
+  <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css">
+{% endblock %}
+<!-- fin Bloques para las meta-->
+
+{% block listaRuta %}
+<li class="breadcrumb-item">
+  <a href="index.html">Inicio</a>
+</li>
+<li class="breadcrumb-item active">Observaciones</li>
+{% endblock %}
+
+{% block contenido %}
+  <!-- Inicio contenido -->
+  <h1>Administrar Observaciones</h1>
+
+  <div class="row">
+    <!-- Ingreso de nueva observación -->
+    <div class="col-md-12">        
+      <div class="card">
+        <div class="card-body">
+          <form method="POST" id="frmSeccion" action="agregar">
+            {% csrf_token %}
+            <!-- Personal -->
+            <div class="form-group row">
+              <label for="nombrePersonal" class="col-md-2 col-form-label">Personal:</label>
+              <div class="col-md-10">
+                <input type="text" class="form-control" id="nombrePersonal" name="nombrePersonal" value={{personal.nombre}} readonly>
+              </div>
+              <br>
+            </div>
+            <!-- Estudiante -->
+            <div class="form-group row">
+              <label for="nombreEstudiante" class="col-md-2 col-form-label">Estudiante:</label>
+              <select class="selectpicker col-md-10" data-live-search="true" id="estudiante" name="estudiante_id">
+                <option value="0" disabled selected>Seleccione un estudiante</option>
+                {% if estudiantes %}
+                {% for estudiante in estudiantes %}
+                <option value="{{ estudiante.idEstudiante }}">{{ estudiante.codigo }} - {{ estudiante.nombre }} {{ estudiante.apellido }}</option>
+                {% endfor %}
+                {% endif %}
+              </select>
+              <br>
+            </div>
+            <!-- Observación -->
+            <div class="form-group row">
+              <label for="observacion" class="col-md-2 col-form-label">Observación:</label>
+              <div class="col-md-10">
+                <textarea rows="6" class="form-control" id="observacion" name="observacion" placeholder="Ingrese observación" autocomplete="off"></textarea>
+              </div>
+              <br>
+            </div>         
+            <br>
+            <div class="row">
+              <div class="col-md-7"></div>
+              <div class="col-md-2.5">
+                <a href="buscar" class="btn btn-dark">Buscar observaciones <i class="fas fa-search"></i></a>
+              </div>
+              <div class="col-md-0.5"></div>
+              <div class="col-md-3">
+                <button class="btn btn-dark">Guardar observación <i class="far fa-save"></i></button>
+              </div>          
+            </div>
+          </form>
+        </div>
+      </div>
+    </div> <!-- Fin nueva observación -->     
+  </div>   
+<!-- Fin contenido -->
+{% endblock contenido %}
+
+{% block agregarScript %}
+  <!-- Page level plugin JavaScript-->
+  <script src="../../static/vendor/datatables/jquery.dataTables.js"></script>
+  <script src="../../static/vendor/datatables/dataTables.bootstrap4.js"></script>
+  <!-- Demo scripts for this page-->
+  <script src="../../static/js/demo/datatables-demo.js"></script>
+  <script src="../../static/js/bootstrap-select.min.js"></script>
+  <script src="{% static 'js/permiso/observacion.js' %}"></script>
+{% endblock agregarScript %}

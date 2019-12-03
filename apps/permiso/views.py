@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from apps.permiso.models import Permiso
 from apps.modulo.models import Modulo
 from django.contrib.auth.decorators import login_required
-import re
 
 # Create your views here.
 
@@ -10,6 +9,8 @@ import re
 def resumenPermiso(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Observación" in request.session['modulos']:
+        return redirect('/index')
     modulos = Modulo.objects.all()
     permisos = Permiso.objects.filter(estado = 'A')
     if request.method == 'POST':
@@ -22,6 +23,8 @@ def resumenPermiso(request):
 def agregarPermiso(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Observación" in request.session['modulos']:
+        return redirect('/index')
     if request.method == 'POST':
         permiso = Permiso(nombre=request.POST["nombrePermiso"])
         permiso.save()
@@ -35,6 +38,8 @@ def agregarPermiso(request):
 def cambiarEstado(request,idPermiso,estado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Observación" in request.session['modulos']:
+        return redirect('/index')
     permiso = Permiso.objects.get(idPermiso = idPermiso)
     permiso.estado = estado
     permiso.save()
@@ -42,6 +47,10 @@ def cambiarEstado(request,idPermiso,estado):
 
 @login_required
 def editarPermiso(request, idPermiso):
+    if not request.session['tipo'] == 'P':
+        return redirect('/my')
+    if not "Observación" in request.session['modulos']:
+        return redirect('/index')
     permiso = Permiso.objects.get(idPermiso=idPermiso)
     modulos = Modulo.objects.all()
     permisos = Permiso.objects.filter(estado = 'A')
