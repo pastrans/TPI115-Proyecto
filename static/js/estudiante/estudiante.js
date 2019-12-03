@@ -52,12 +52,12 @@ $(document).ready(function(){
     $("#LchkCambiar").hide();
     $('#chkCambiar').click(function(){
         if($(this).prop("checked") == true){
-            $("#claveP").show();
-            $("#LclaveP").show();
+            $("#claveEstudiante").show();
+            $("#lblclaveEstudiante").show();
         }
         else if($(this).prop("checked") == false){
-            $("#claveP").hide();
-            $("#LclaveP").hide();
+            $("#claveEstudiante").hide();
+            $("#lblclaveEstudiante").hide();
         }
     });
 });
