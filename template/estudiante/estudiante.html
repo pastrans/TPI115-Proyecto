@@ -134,6 +134,27 @@
               {%endfor%}
             </tbody>
           </table>
+          {% if estudiantes.has_other_pages %}
+            <ul class="pagination">
+              {% if estudiantes.has_previous %}
+                <li class="page-item"><a href="?page={{ estudiantes.previous_page_number }}">&laquo;</a></li>
+              {% else %}
+                <li class="disabled "><span>&laquo;</span></li>
+              {% endif %}
+              {% for i in estudiantes.paginator.page_range %}
+                {% if estudiantes.number == i %}
+                  <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                  <li><a href="?page={{ i }}">{{ i }}</a></li>&nbsp;
+                {% endif %}
+              {% endfor %}
+              {% if sanciones.has_next %}
+                <li><a href="?page={{ estudiantes.next_page_number }}">&raquo;</a></li>
+              {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+              {% endif %}
+            </ul>
+            {% endif %}
           <div class="float-right">
               <form method="POST" id="frmFiltroSeccion" class="d-none">
                 {% csrf_token %}

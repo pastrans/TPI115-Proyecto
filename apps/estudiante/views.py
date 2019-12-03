@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 from apps.estudiante.models import Estudiante
 from apps.usuario.models import Usuario
@@ -17,8 +18,12 @@ def resumenEstudiante(request):
         return redirect('/my')
     if not "Estudiante" in request.session['modulos']:
         return redirect('/index')
-    #Método    
-    estudiantes = Estudiante.objects.filter(estado = 'A')
+    #Método
+    page = request.GET.get('page', 1)
+    estudiantes_list = Estudiante.objects.filter(estado = 'A')
+    paginator = Paginator(estudiantes_list, 100)
+    estudiantes = paginator.page(page)    
+    #estudiantes = Estudiante.objects.filter(estado = 'A')
     seccionGrados = SeccionGrado.objects.all()
     if request.method == 'POST': #el post es para cambiar estado
         estado = request.POST['estado']
@@ -41,10 +46,10 @@ def agregarEstudiante(request):
         seccionGrado_id = request.POST['seccionGrado_id']
         #usuario
         clave = request.POST['claveEstudiante']
-        estudiante = Estudiante(codigo = codigo, nombre = nombre, apellido = apellido, seccionGrado_id=seccionGrado_id, estado = 'A')
-        usuario = Usuario(codigo = codigo, estudiante = estudiante)
-        usuario.set_password(clave)        
+        estudiante = Estudiante(codigo = codigo, nombre = nombre, apellido = apellido, seccionGrado_id=seccionGrado_id, estado = 'A')     
         estudiante.save()
+        usuario = Usuario(codigo = codigo, estudiante = estudiante)
+        usuario.set_password(clave)   
         usuario.save()
     return redirect('resumenEstudiante')
 
