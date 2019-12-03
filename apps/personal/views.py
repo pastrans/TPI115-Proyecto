@@ -34,7 +34,7 @@ def agregarPersonal(request):
         nombre = request.POST['nombreP']
         apellido = request.POST['apellidoP']
         #usuario
-        clave = request.POST('claveP')
+        clave = request.POST['claveP']
         perm = Permiso.objects.get(idPermiso = request.POST['permisoP'])
         Per = Personal(codigo = codigo, nombre = nombre, apellido = apellido, estado = 'A')
         U = Usuario(codigo = codigo, personal = Per, permiso = perm)
