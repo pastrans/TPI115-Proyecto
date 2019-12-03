@@ -1,19 +1,19 @@
 
-function editPnal(idPnal, nombre, apellido, codigo, idPermiso){
-    $("#frmSeccion").attr('action', 'editar/' + idPnal);
-    $("#nombreP").val(nombre);
-    $("#apellidoP").val(apellido);
-    $("#codigoP").val(codigo);
-    $("#permisoP").val(idPermiso).change();
+function editEstudiante(idEstudiante, nombre, apellido, codigo, idSeccionGrado){
+    $("#frmSeccion").attr('action', 'editar/' + idEstudiante);
+    $("#nombreEstudiante").val(nombre);
+    $("#apellidoEstudiante").val(apellido);
+    $("#codigoEstudiante").val(codigo);
+    $("#seccionGrado").val(idSeccionGrado).change();
     $("#chkCambiar").show();
     $("#LchkCambiar").show();
-    $("#claveP").hide();
-    $("#LclaveP").hide();
+    $("#claveEstudiante").hide();
+    $("#lblclaveEstudiante").hide();
 }
 
-function elimPnal(idPnal){
+function elimEstudiante(idEstudiante){
     Swal.fire({
-        title: '¿Seguro de desactivar la sección?',
+        title: '¿Seguro que desea desactivar la sección?',
         text: "Los datos relacionados con la sección ya no serán visibles",
         type: 'info',
         showCancelButton: true,
@@ -21,14 +21,14 @@ function elimPnal(idPnal){
         cancelButtonText: 'Cancelar'
         }).then((result) => {
         if (result.value) {
-            location.href = '/personal/cambiarEstado/' + idPnal + '/I'
+            location.href = '/estudiante/cambiarEstado/' + idEstudiante + '/I'
         }
     });
 }
 
-function habPnal(idPnal){
+function habEstudiante(idEstudiante){
     Swal.fire({
-        title: '¿Seguro de activar la sección?',
+        title: '¿Seguro que desea activar la sección?',
         text: "Los datos relacionados con la sección ahora serán visibles",
         type: 'info',
         showCancelButton: true,
@@ -36,7 +36,7 @@ function habPnal(idPnal){
         cancelButtonText: 'Cancelar'
         }).then((result) => {
         if (result.value) {
-            location.href = '/personal/cambiarEstado/' + idPnal + '/A'
+            location.href = '/estudiante/cambiarEstado/' + idEstudiante + '/A'
         }
     });
 }

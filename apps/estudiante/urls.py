@@ -1,9 +1,9 @@
 from django.urls import path
-from apps.estudiante.views import resumenPersonal, agregarPersonal, editarPersonal, cambiarEstado
+from apps.estudiante.views import resumenEstudiante, agregarEstudiante, editarEstudiante, cambiarEstado
 
 urlpatterns = [
-    path('', resumenPersonal, name='resumenPersonal'),
-    path('agregar', agregarPersonal, name='agregarPersonal'),
-    path('editar/<int:idPnal>', editarPersonal, name='editarPersonal'),
-    path('cambiarEstado/<int:idPnal>/<slug:estado>', cambiarEstado, name='cambiarEstado')
+    path('', resumenEstudiante, name='resumenEstudiante'),
+    path('agregar', agregarEstudiante, name='agregarEstudiante'),
+    path('editar/<int:idEstudiante>', editarEstudiante, name='editarEstudiante'),
+    path('cambiarEstado/<int:idEstudiante>/<slug:estado>', cambiarEstado, name='cambiarEstado')
 ]
