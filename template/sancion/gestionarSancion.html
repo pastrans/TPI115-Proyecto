@@ -74,6 +74,27 @@
                 {% endif %}
               </tbody>
             </table>
+            {% if sanciones.has_other_pages %}
+            <ul class="pagination">
+              {% if sanciones.has_previous %}
+                <li class="page-item"><a href="?page={{ sanciones.previous_page_number }}">&laquo;</a></li>
+              {% else %}
+                <li class="disabled "><span>&laquo;</span></li>
+              {% endif %}
+              {% for i in sanciones.paginator.page_range %}
+                {% if sanciones.number == i %}
+                  <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                  <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+              {% endfor %}
+              {% if sanciones.has_next %}
+                <li><a href="?page={{ sanciones.next_page_number }}">&raquo;</a></li>
+              {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+              {% endif %}
+            </ul>
+            {% endif %}
             <div class="float-right">
                 <form method="POST" id="frmFiltroSancion" class="d-none">
                   {% csrf_token %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from apps.sancion.models import Sancion
 from django.contrib.auth.decorators import login_required
-
+from django.core.paginator import Paginator
 
 # Create your views here.
 @login_required
@@ -10,7 +10,10 @@ def resumenSancion(request):
         return redirect('/my')
     if not "Sanción" in request.session['modulos']:
         return redirect('/index')
-    sanciones = Sancion.objects.filter(estado='A')
+    page = request.GET.get('page', 1)
+    sanciones_list = Sancion.objects.filter(estado='A')
+    paginator = Paginator(sanciones_list, 5)
+    sanciones = paginator.page(page)
     if request.method == 'POST':
         sanciones = Sancion.objects.filter(estado=request.POST['estado'])
     data = {'sanciones' : sanciones}
