@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 def resumenPermiso(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Observación" in request.session['modulos']:
+    if not "Permiso" in request.session['modulos']:
         return redirect('/index')
     modulos = Modulo.objects.all()
     permisos = Permiso.objects.filter(estado = 'A')
@@ -23,7 +23,7 @@ def resumenPermiso(request):
 def agregarPermiso(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Observación" in request.session['modulos']:
+    if not "Permiso" in request.session['modulos']:
         return redirect('/index')
     if request.method == 'POST':
         permiso = Permiso(nombre=request.POST["nombrePermiso"])
@@ -38,7 +38,7 @@ def agregarPermiso(request):
 def cambiarEstado(request,idPermiso,estado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Observación" in request.session['modulos']:
+    if not "Permiso" in request.session['modulos']:
         return redirect('/index')
     permiso = Permiso.objects.get(idPermiso = idPermiso)
     permiso.estado = estado
@@ -49,7 +49,7 @@ def cambiarEstado(request,idPermiso,estado):
 def editarPermiso(request, idPermiso):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Observación" in request.session['modulos']:
+    if not "Permiso" in request.session['modulos']:
         return redirect('/index')
     permiso = Permiso.objects.get(idPermiso=idPermiso)
     modulos = Modulo.objects.all()
