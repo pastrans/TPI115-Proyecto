@@ -75,7 +75,7 @@ def Pdf(request):
         today = timezone.now()
         estudiante = Estudiante.objects.get(idEstudiante=request.POST['idEstudiante'])
         amonestaciones = Amonestacion.objects.filter(estudiante=estudiante).order_by('fecha')
-        llegadasTarde = Impuntualidad.objects.filter(estudiante=estudiante).order_by('fechaHora')
+        llegadasTarde = Impuntualidad.objects.filter(estudiante=estudiante).order_by('fecha')
         inasistencias = Inasistencia.objects.filter(estudiante=estudiante).order_by('fecha')
         observaciones = Observacion.objects.filter(estudiante=estudiante).order_by('fecha')
         params = {
