@@ -12,7 +12,7 @@ import datetime
 def resumenSeccionGrado(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not ("Seccion" in request.session['modulos'] and "Grado" in request.session['modulos']):
+    if not ("Sección Grado" in request.session['modulos']):
         return redirect('/index')
     x = datetime.datetime.now()
     anio = x.year
@@ -29,7 +29,7 @@ def resumenSeccionGrado(request):
 def agregarSeccionGrado(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not ("Seccion" in request.session['modulos'] and "Grado" in request.session['modulos']):
+    if not ("Sección Grado" in request.session['modulos']):
         return redirect('/index')
     if request.method == 'POST':
         x = datetime.datetime.now()
@@ -49,7 +49,7 @@ def agregarSeccionGrado(request):
 def editarSeccionGrado(request, idSeccionGrado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not ("Seccion" in request.session['modulos'] and "Grado" in request.session['modulos']):
+    if not ("Sección Grado" in request.session['modulos']):
         return redirect('/index')
     if request.method == 'POST':
         sg = SeccionGrado.objects.get(idSeccionGrado = idSeccionGrado)

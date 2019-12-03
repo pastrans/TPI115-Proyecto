@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 def resumenSeccion(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Seccion" in request.session['modulos']:
+    if not "Sección" in request.session['modulos']:
         return redirect('/index')
     secciones = Seccion.objects.filter(estado='A')
     if request.method == 'POST':
@@ -19,7 +19,7 @@ def resumenSeccion(request):
 def agregarSeccion(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Seccion" in request.session['modulos']:
+    if not "Sección" in request.session['modulos']:
         return redirect('/index')
     if request.method == 'POST':
         nombre = request.POST['nombre']
@@ -32,7 +32,7 @@ def agregarSeccion(request):
 def editarSeccion(request, idSeccion):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Seccion" in request.session['modulos']:
+    if not "Sección" in request.session['modulos']:
         return redirect('/index')
     if request.method == 'POST':
         seccion = Seccion.objects.get(idSeccion = idSeccion)
@@ -45,7 +45,7 @@ def editarSeccion(request, idSeccion):
 def estadoSeccion(request, idSeccion, estado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Seccion" in request.session['modulos']:
+    if not "Sección" in request.session['modulos']:
         return redirect('/index')
     seccion = Seccion.objects.get(idSeccion = idSeccion)
     seccion.estado = estado

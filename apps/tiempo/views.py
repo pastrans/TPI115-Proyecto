@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 def resumenTiempo(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Tiempos" in request.session['modulos']:
+    if not "Tiempo" in request.session['modulos']:
         return redirect('/index')
     t = Tiempo.objects.filter(estado = 'A').order_by('horaInicial')
     if request.method == 'POST': #el post es para cambiar estado
@@ -21,7 +21,7 @@ def resumenTiempo(request):
 def agregarTiempo(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Tiempos" in request.session['modulos']:
+    if not "Tiempo" in request.session['modulos']:
         return redirect('/index')
     if request.method == 'POST':
         hIni = request.POST['horaI']
@@ -34,7 +34,7 @@ def agregarTiempo(request):
 def editarTiempo(request,idTiempo):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Tiempos" in request.session['modulos']:
+    if not "Tiempo" in request.session['modulos']:
         return redirect('/index')
     if request.method == 'POST':
         t = Tiempo.objects.get(idTiempo = idTiempo)
@@ -47,7 +47,7 @@ def editarTiempo(request,idTiempo):
 def cambiarEstado(request,idTiempo,estado):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Tiempos" in request.session['modulos']:
+    if not "Tiempo" in request.session['modulos']:
         return redirect('/index')
     print(estado)
     print(idTiempo)

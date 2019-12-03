@@ -62,8 +62,8 @@
           <i class="fas fa-user-circle fa-fw"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-          <a class="dropdown-item" href="#">Configuraciones</a>
-          <div class="dropdown-divider"></div>
+          <!--a class="dropdown-item" href="#">Configuraciones</a-->
+          <!--div class="dropdown-divider"></div-->
           <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Salir</a>
         </div>
       </li>
@@ -82,15 +82,15 @@
         </a>
       </li>
 
-      {% if "Seccion" in request.session.modulos or "Asignatura" in request.session.modulos or "Grado" in request.session.modulos or "Especialidad" in request.session.modulos or "Tiempos" in request.session.modulos%}
+      {% if "Sección" in request.session.modulos or "Asignatura" in request.session.modulos or "Grado" in request.session.modulos or "Especialidad" in request.session.modulos or "Tiempo" in request.session.modulos or "Sección Grado" in request.session.modulos %}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-folder"></i>
           <span>Académica</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-          {% if "Seccion" in request.session.modulos %}
-          <a class="dropdown-item" href="/seccion">Seccion</a>
+          {% if "Sección" in request.session.modulos %}
+          <a class="dropdown-item" href="/seccion">Sección</a>
           {% endif %}
           {% if "Grado" in request.session.modulos %}
           <a class="dropdown-item" href="/grado">Grado</a>
@@ -98,10 +98,10 @@
           {% if "Asignatura" in request.session.modulos %}
           <a class="dropdown-item" href="/asignatura">Asignatura</a>
           {% endif %}
-          {% if "Tiempos" in request.session.modulos %}
+          {% if "Tiempo" in request.session.modulos %}
           <a class="dropdown-item" href="/tiempo">Tiempo</a>
           {% endif %}
-          {% if "Grado" in request.session.modulos and "Seccion" in request.session.modulos %}
+          {% if "Sección Grado" in request.session.modulos %}
           <a class="dropdown-item" href="/seccionGrado">Seccion/Grado</a>
           {% endif %}
           {% if "Especialidad" in request.session.modulos %}
@@ -111,27 +111,27 @@
       </li>
       {% endif %}
 
-      {% if "Amonestacion" in request.session.modulos or "Tipo falta" in request.session.modulos or "Falta" in request.session.modulos or "Observacion" in request.session.modulos or "Sancion" in request.session.modulos %}
+      {% if "Amonestación" in request.session.modulos or "Tipo Falta" in request.session.modulos or "Falta" in request.session.modulos or "Observación" in request.session.modulos or "Sanción" in request.session.modulos %}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-folder"></i>
           <span>Disciplina</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-          {% if "Amonestacion" in request.session.modulos %}
-          <a class="dropdown-item" href="/amonestacion">Amonestacion</a>
+          {% if "Amonestación" in request.session.modulos %}
+          <a class="dropdown-item" href="/amonestacion">Amonestación</a>
           {% endif %}
-          {% if "Observacion" in request.session.modulos %}
-          <a class="dropdown-item" href="/observacion">Observacion</a>
+          {% if "Observación" in request.session.modulos %}
+          <a class="dropdown-item" href="/observacion">Observación</a>
           {% endif %}
-          {% if "Tipo falta" in request.session.modulos %}
+          {% if "Tipo Falta" in request.session.modulos %}
           <a class="dropdown-item" href="/tipoFalta">Tipo de falta</a>
           {% endif %}
           {% if "Falta" in request.session.modulos %}
           <a class="dropdown-item" href="/falta">Falta</a>
           {% endif %}
-          {% if "Sancion" in request.session.modulos %}
-          <a class="dropdown-item" href="/sancion">Sanciones</a>
+          {% if "Sanción" in request.session.modulos %}
+          <a class="dropdown-item" href="/sancion">Sanción</a>
           {% endif %}
         </div>
       </li>
@@ -157,7 +157,7 @@
       </li>
       {% endif %}
 
-      {% if "Inasistencias" in request.session.modulos %}
+      {% if "Inasistencia" in request.session.modulos %}
       <li class="nav-item">
         <a class="nav-link" href="/inasistencia">
           <i class="fas fa-fw fa-chart-area"></i>

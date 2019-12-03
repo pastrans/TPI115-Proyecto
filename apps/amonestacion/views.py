@@ -26,7 +26,7 @@ from django.utils import timezone
 def amonestacionIndex(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Amonestacion" in request.session['modulos']:
+    if not "Amonestación" in request.session['modulos']:
         return redirect('/index')
     data = {}
     errores = set()
@@ -52,7 +52,7 @@ def amonestacionIndex(request):
 def amonestacionBuscar(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Amonestacion" in request.session['modulos']:
+    if not "Amonestación" in request.session['modulos']:
         return redirect('/index')
     data = {}
     amonestaciones = {}
@@ -69,7 +69,7 @@ def amonestacionBuscar(request):
 def amonestacionEliminar(request, idAmonestacion):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
-    if not "Amonestacion" in request.session['modulos']:
+    if not "Amonestación" in request.session['modulos']:
         return redirect('/index')
     a = Amonestacion.objects.get(idAmonestacion=idAmonestacion)
     a.delete()
