@@ -1,16 +1,16 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block titulo %}
-  Administrar personal
+  Administrar estudiantes
 {% endblock %}
 
 <!-- incio Bloques para las meta-->
 {% block descripcion %}
-  Personal del Instituto Cultural de Oxford El Salvador
+  Estudiantes del Instituto Cultural de Oxford El Salvador
 {% endblock %}
 
 {% block palabrasClave %}
-  "Oxford el Salvador, Colegio Oxford, Colegios de San Salvador , San Salvador, Asistencias Oxford"
+  "Oxford el Salvador, Colegio Oxford, Colegios de San Salvador , San Salvador, Estudiantes Oxford"
 {% endblock %}
 
 {% block agregarMetas %}
@@ -23,85 +23,129 @@
 
 {% block listaRuta %}
 <li class="breadcrumb-item">
-  <a href="index.html">Inicio</a>
+  <a href="/index">Inicio</a>
 </li>
 <li class="breadcrumb-item active">Personal</li>
 {% endblock %}
 
 {% block contenido %}
-  <h1>Administrar Personal</h1>
+  <h1>Administrar Estudiantes</h1>
   
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <form method="POST" id="frmSeccion" action="agregar">
-              {% csrf_token %}
-              <!--asignatura, SeccionGrado, personal, hora, dia-->
-              <div class="row">
-                  <div class="col-md-4">
-                        <label for="nombreP">Nombres:</label>
-                        <input type="text" class="form-control" id="nombreP" name="nombreP" placeholder="Nombres del personal" autocomplete="off">
-                        <br>
-                  </div>
-                  <div class="col-md-4">
-                        <label for="apellidoP">Apellidos:</label>
-                        <input type="text" class="form-control" id="apellidoP" name="apellidoP" placeholder="Apellidos del personal" autocomplete="off">
-                        <br>
-                  </div>
-                  <div class="col-md-4">
-                        <label for="codigoP">Código:</label>
-                        <input type="text" class="form-control" id="codigoP" name="codigoP" placeholder="codigo identificador" autocomplete="off">
-                  </div>                
+  <div class="row">
+    <div class="col-md-12">
+      <!-- Ingresar nuevo estudiante -->
+      <div class="card">
+        <div class="card-body">
+          <form method="POST" id="frmSeccion" action="agregar">
+            {% csrf_token %}            
+            <div class="row">
+              <!-- Nombres -->
+              <div class="col-md-8">
+                <label for="nombreEstudiante">Nombres:</label>
+                <input type="text" class="form-control" id="nombreEstudiante" name="nombreEstudiante" placeholder="Nombres del estudiante" autocomplete="off">
+                <br>
               </div>
-              <button type="submit" class="btn btn-dark float-right">Guardar</button>
-            </form>
-          </div>
+              <!-- Apellidos -->
+              <div class="col-md-8">
+                <label for="apellidoEstudiante">Apellidos:</label>
+                <input type="text" class="form-control" id="apellidoEstudiante" name="apellidoEstudiante" placeholder="Apellidos del estudiante" autocomplete="off">
+                <br>
+              </div>
+            </div>
+            <div class="row">
+              <!-- Código identificador -->
+              <div class="col-md-8">
+                <label for="codigoEstudiante">Código:</label>
+                <input type="text" class="form-control" id="codigoEstudiante" name="codigoEstudiante" placeholder="Código identificador" autocomplete="off">
+              </div>
+              <!-- Sección/Grado -->
+              <div class="col-md-8">
+                <label for="estudiante" class="col-form-label">Sección/Grado:</label>
+                <select class="selectpicker" data-live-search="true" id="seccionGrado" name="seccionGrado_id">
+                  <option value="0" disabled selected>Seleccione un Sección/Grado</option>
+                  {% if seccionGrados %}
+                  {% for seccionGrado in seccionGrados %}                   
+                  <option value="{{ seccionGrado.idSeccionGrado }}">{{ seccionGrado.grado.nombre }} - {{ seccionGrado.seccion.nombre }}</option>
+                  {% endfor %}
+                  {% endif %}
+                </select>
+                <label for="codigoEstudiante">Código:</label>
+                <input type="text" class="form-control" id="codigoEstudiante" name="codigoEstudiante" placeholder="Código identificador" autocomplete="off">
+              </div>    
+            </div>
+            <!-- Gestion de usuario -->
+            <div class="card">
+              <div class="card-body">
+                  <h5>Gestión de usuario - Estudiantes</h5>
+                <div class="row">                    
+                  <div class="col-md-6">
+                    <label for="claveP" id="LclaveP" name="LclaveP">Contraseña:</label>
+                    <input type="password" class="form-control" id="claveP" name="claveP" placeholder="clave del usuario" autocomplete="off">
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" id="chkCambiar" name="chkCambiar" value="1">
+                      <label class="form-check-label" for="chkCambiar" id="LchkCambiar" name="LchkCambiar">Editar contraseña actual</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="permisoP">Permiso:</label>
+                    <select name="permisoP" id="permisoP" class="form-control form-control">
+                      {% for p in permisos%}
+                      <option value="{{p.idPermiso}}">{{p.nombre}}</option>
+                      {%endfor%}
+                    </select>                      
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-dark float-right">Guardar</button>
+          </form>
         </div>
       </div>
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th class="scope">Código</th>
-                  <th class="scope">Nombres</th>
-                  <th class="scope">Apellidos</th>                  
-                  <th></th>
-                </tr>
-              </thead>  
-              <tbody>
-                {% for p in personal%}
-                <tr>                    
-                    <td>{{p.codigo}}</td>
-                    <td>{{p.nombre}}</td>
-                    <td>{{p.apellido}}</td>
-                    <td>
-                        {% if p.estado == 'A' %}
-                        <button class="btn btn-outline-dark" onclick="editPnal('{{p.idPersonal}}' ,'{{p.nombre}}' ,'{{p.apellido}}' ,'{{p.codigo}}');" data-toggle="tooltip" data-placement="bottom" title="Editar personal"> <i class="fas fa-edit"></i></button>
-                        <button class="btn btn-outline-dark" onclick="elimPnal('{{p.idPersonal}}');" data-toggle="tooltip" data-placement="bottom" title="Eliminar personal"> <i class="far fa-trash-alt"></i></button>
-                        <button class="btn btn-outline-dark" onclick="location.href='/horaClase/horarioPersonal/{{p.idPersonal}}'" data-toggle="tooltip" data-placement="bottom" title="Gestionar Horario"> <i class="far fa-calendar-alt"></i></button>
-                        {% elif p.estado == 'I' %}
-                        <button class="btn btn-outline-dark" onclick="habPnal('{{p.idPersonal}}');" data-toggle="tooltip" data-placement="bottom" title="Habilitar personal"> <i class="fas fa-trash-restore"></i></button>
-                        {% endif %}
-                    </td>                    
-                </tr>
-                {%endfor%}
-              </tbody>
-            </table>
-            <div class="float-right">
-                <form method="POST" id="frmFiltroSeccion" class="d-none">
-                  {% csrf_token %}
-                  <input type="text" id="estado" name="estado">
-                </form>  
-                <a href="#" onclick="filtrarSeccion('A')" class="card-link">Activos</a> <!--Filtrar Seccion A o I-->
-                <a href="#" onclick="filtrarSeccion('I')" class="card-link">Inactivos</a>
-            </div>
+    </div>
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="scope">Código</th>
+                <th class="scope">Nombres</th>
+                <th class="scope">Apellidos</th>                  
+                <th></th>
+              </tr>
+            </thead>  
+            <tbody>
+              {% for p,u in cross%}
+              <tr>                    
+                  <td>{{p.codigo}}</td>
+                  <td>{{p.nombre}}</td>
+                  <td>{{p.apellido}}</td>
+                  <td>
+                      {% if p.estado == 'A' %}
+                      <button class="btn btn-outline-dark" onclick="editPnal('{{p.idPersonal}}' ,'{{p.nombre}}' ,'{{p.apellido}}' ,'{{p.codigo}}', '{{u.permiso.idPermiso}}');" data-toggle="tooltip" data-placement="bottom" title="Editar personal"> <i class="fas fa-edit"></i></button>
+                      <button class="btn btn-outline-dark" onclick="elimPnal('{{p.idPersonal}}');" data-toggle="tooltip" data-placement="bottom" title="Eliminar personal"> <i class="far fa-trash-alt"></i></button>
+                      <button class="btn btn-outline-dark" onclick="location.href='/horaClase/horarioPersonal/{{p.idPersonal}}'" data-toggle="tooltip" data-placement="bottom" title="Gestionar Horario"> <i class="far fa-calendar-alt"></i></button>
+                      {% elif p.estado == 'I' %}
+                      <button class="btn btn-outline-dark" onclick="habPnal('{{p.idPersonal}}');" data-toggle="tooltip" data-placement="bottom" title="Habilitar personal"> <i class="fas fa-trash-restore"></i></button>
+                      {% endif %}
+                  </td>                    
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+          <div class="float-right">
+              <form method="POST" id="frmFiltroSeccion" class="d-none">
+                {% csrf_token %}
+                <input type="text" id="estado" name="estado">
+              </form>  
+              <a href="#" onclick="filtrarSeccion('A')" class="card-link">Activos</a> <!--Filtrar Seccion A o I-->
+              <a href="#" onclick="filtrarSeccion('I')" class="card-link">Inactivos</a>
           </div>
         </div>
       </div>
     </div>
+  </div>
 {% endblock %}
 
 {% block agregarScript %}
