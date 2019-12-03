@@ -38,9 +38,9 @@ def agregarPersonal(request):
         perm = Permiso.objects.get(idPermiso = request.POST['permisoP'])
         Per = Personal(codigo = codigo, nombre = nombre, apellido = apellido, estado = 'A')
         U = Usuario(codigo = codigo, personal = Per, permiso = perm)
-        U.set_password(clave)
-        U.save()
+        U.set_password(clave)        
         Per.save()
+        U.save()
         return redirect('resumenPersonal')
     return redirect('resumenPersonal')
 
