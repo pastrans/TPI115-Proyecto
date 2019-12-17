@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 def resumenPersonal(request):
     if not request.session['tipo'] == 'P':
         return redirect('/my')
+    if not "Personal" in request.session["modulos"]:
+        return redirect("/index")
     p = Personal.objects.filter(estado = 'A')
     if request.method == 'POST': #el post es para cambiar estado
         estado = request.POST['estado']
@@ -37,9 +39,9 @@ def agregarPersonal(request):
         clave = request.POST['claveP']
         perm = Permiso.objects.get(idPermiso = request.POST['permisoP'])
         Per = Personal(codigo = codigo, nombre = nombre, apellido = apellido, estado = 'A')
+        Per.save()
         U = Usuario(codigo = codigo, personal = Per, permiso = perm)
         U.set_password(clave)        
-        Per.save()
         U.save()
         return redirect('resumenPersonal')
     return redirect('resumenPersonal')
